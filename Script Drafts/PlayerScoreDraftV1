@@ -1,0 +1,59 @@
+using UnityEngine;
+using System.Collections;
+
+public class PlayerScore : MonoBehaviour {
+
+[SerializeField] string playerMe;
+[SerializeField] int playerFrag;
+[SerializeField] int playerDeath;
+[SerializeField] int fragValue;
+
+PhotonView photonView;
+
+void Start ()
+{
+	photonView = GetComponent<PhotonView> ();
+	playerFrag = 0;
+	playerDeath = 0;
+
+
+	// From here https://gist.github.com/cnsoft/7521689
+	Hashtable setPlayerKills = new Hashtable() {{"Kills", 0}};
+	PhotonNetwork.player.SetCustomProperties(setPlayerKills);
+		
+	Hashtable setPlayerDeaths = new Hashtable() {{"Deaths", 0}};
+	PhotonNetwork.player.SetCustomProperties(setPlayerDeaths);
+}
+
+
+
+
+[PunRPC]
+void AddFrag_RPC(string fragger, string fragged)
+{
+	//Turn my username into a string
+	playerMe = PhotonNetwork.player.name;
+
+	if(fragger == playerMe)
+		{
+			playerFrag += fragValue;
+			AddMessage (fragger + "has defeated" + playerFrag + "opponents");
+		}
+
+	if(fragged == playerMe)
+		{
+			playerDeath += fragValue;
+			AddMessage (fragger + " has defeated " + playerDeath + " opponents ");
+		}
+}
+
+void AddMessage(string message)
+{
+	//               what we call       who sent to       parameter (what passes)
+	photonView.RPC ("AddMessage_RPC", PhotonTargets.All, message);
+}
+
+
+}
+
+
