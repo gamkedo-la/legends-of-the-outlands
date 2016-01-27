@@ -5,7 +5,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float movementSpeed = 5.0f;
 	public float rotateSpeed = 50.0f;
+	public float catchTime = 0.25f;
+	public AudioClip squeak;
+	public AudioClip chatter;
 
+	float lastClickTime;
 
 	void Movement(){
 		transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis ("Vertical"));
@@ -18,6 +22,15 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.R)) {
 			transform.rotation = Quaternion.identity;
+		}
+
+		if (Input.GetMouseButtonDown (1)) {
+			if (Time.time - lastClickTime < catchTime) {
+				SoundManager.instance.PlayNamedClipOn (chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);	
+			} else {
+				SoundManager.instance.PlayNamedClipOn (squeak, transform.position, gameObject.name, "squeak", 1.0f, transform);	
+			}
+			lastClickTime = Time.time;
 		}
 
 		Movement ();
