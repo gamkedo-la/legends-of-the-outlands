@@ -4,6 +4,7 @@ using Photon;
 
 public class RandomMatchmaker : Photon.PunBehaviour {
 
+	RoomOptions roomOptions;
 
 	public override void OnJoinedLobby(){
 		PhotonNetwork.JoinRandomRoom ();
@@ -18,13 +19,16 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	}
 
 	void OnPhotonRandomJoinFailed(){
-		Debug.Log ("Can't join random room!");
-		PhotonNetwork.CreateRoom (null);
+		Debug.Log ("First!");
+		PhotonNetwork.CreateRoom (null, roomOptions, TypedLobby.Default);
+
+
 	}
 
 	// Use this for initialization
 	void Start () {
 		PhotonNetwork.ConnectUsingSettings ("0.1");
+		roomOptions = new RoomOptions() {isVisible = true, maxPlayers = 2};
 	}
 
 	void OnGUI(){
