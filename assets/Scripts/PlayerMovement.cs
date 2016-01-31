@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	float lastClickTime;
 
+
 	void Movement(){
 		transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis ("Vertical"));
 		transform.Rotate(0, Input.GetAxis ("Horizontal") * Time.deltaTime * rotateSpeed, 0);
