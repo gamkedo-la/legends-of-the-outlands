@@ -11,10 +11,15 @@ public class PlayerMovement : MonoBehaviour {
 
 	float lastClickTime;
 
-
 	void Movement(){
 		transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis ("Vertical"));
-		transform.Rotate(0, Input.GetAxis ("Horizontal") * Time.deltaTime * rotateSpeed, 0);
+		transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis ("Horizontal"));
+
+		if (Input.GetAxis ("Mouse X") < 0.0f) {
+			transform.Rotate(0, -1.0f * Time.deltaTime * rotateSpeed, 0);
+		} else if (Input.GetAxis ("Mouse X") > 0.0f) {
+			transform.Rotate(0, 1.0f * Time.deltaTime * rotateSpeed, 0);
+		}
 	}
 	// Update is called once per frame
 	void Update () {
@@ -33,7 +38,6 @@ public class PlayerMovement : MonoBehaviour {
 			}
 			lastClickTime = Time.time;
 		}
-
-		Movement ();
+		Movement ();	
 	}
 }
