@@ -8,8 +8,16 @@ public class PlayerMovement : MonoBehaviour {
 	public float catchTime = 0.25f;
 	public AudioClip squeak;
 	public AudioClip chatter;
+	public float jumpPower = 20.0f;
+	public bool grounded = true;
 
+	bool hasJumped = false;
 	float lastClickTime;
+	Rigidbody rb;
+
+	void Start() {
+		rb = GetComponentInChildren<Rigidbody> ();
+	}
 
 	void Movement(){
 		transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis ("Vertical"));
@@ -30,6 +38,14 @@ public class PlayerMovement : MonoBehaviour {
 			transform.rotation = Quaternion.identity;
 		}
 
+		if (grounded == false && rb.velocity.y == 0) {
+			grounded = true;
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space) && grounded == true) {
+			hasJumped = true;
+		}
+
 		if (Input.GetMouseButtonDown (1)) {
 			if (Time.time - lastClickTime < catchTime) {
 				SoundManager.instance.PlayNamedClipOn (chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);	
@@ -39,5 +55,13 @@ public class PlayerMovement : MonoBehaviour {
 			lastClickTime = Time.time;
 		}
 		Movement ();	
+	}
+
+	void FixedUpdate(){
+		if (hasJumped) {
+			rb.AddForce (transform.up * jumpPower);
+			grounded = false;
+			hasJumped = false;
+		}
 	}
 }
