@@ -46,6 +46,12 @@ public class PlayerMovement : MonoBehaviour {
 			hasJumped = true;
 		}
 
+		if (hasJumped) {
+			rb.AddForce (transform.up * jumpPower);
+			grounded = false;
+			hasJumped = false;
+		}
+
 		if (Input.GetMouseButtonDown (1)) {
 			if (Time.time - lastClickTime < catchTime) {
 				SoundManager.instance.PlayNamedClipOn (chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);	
@@ -58,10 +64,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		if (hasJumped) {
-			rb.AddForce (transform.up * jumpPower);
-			grounded = false;
-			hasJumped = false;
-		}
+		
 	}
 }

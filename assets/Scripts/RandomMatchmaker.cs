@@ -4,6 +4,8 @@ using Photon;
 
 public class RandomMatchmaker : Photon.PunBehaviour {
 
+	public Transform spawnPoint;
+
 	string whichRat;
 	RoomOptions roomOptions;
 
@@ -32,7 +34,7 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 				}
 			}
 		}
-		GameObject monster = PhotonNetwork.Instantiate(whichRat , Vector3.zero, Quaternion.identity, 0);
+		GameObject monster = PhotonNetwork.Instantiate(whichRat , spawnPoint.position, Quaternion.identity, 0);
 		PlayerMovement controller = monster.GetComponent<PlayerMovement> ();
 		controller.enabled = true;
 		CameraController playerCam = monster.GetComponent<CameraController> ();
