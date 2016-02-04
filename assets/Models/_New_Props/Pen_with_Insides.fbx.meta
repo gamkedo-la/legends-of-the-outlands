@@ -1,17 +1,37 @@
 fileFormatVersion: 2
-guid: bd35df4ff1e0b4b33b7a28c75a0fbf8b
-timeCreated: 1454530345
+guid: 2ac0f908e480340d0999d8bab5b14ad4
+timeCreated: 1454579171
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Toaster
-    7400000: Default Take
-    9500000: //RootNode
+    100000: Clicker
+    100002: Clip_1
+    100004: Pen_Cartridge
+    100006: Pen_Shell_1
+    100008: //RootNode
+    100010: Spring_1
+    400000: Clicker
+    400002: Clip_1
+    400004: Pen_Cartridge
+    400006: Pen_Shell_1
+    400008: //RootNode
+    400010: Spring_1
+    2300000: Clicker
+    2300002: Clip_1
+    2300004: Pen_Cartridge
+    2300006: Pen_Shell_1
+    2300008: Spring_1
+    3300000: Clicker
+    3300002: Clip_1
+    3300004: Pen_Cartridge
+    3300006: Pen_Shell_1
+    3300008: Spring_1
+    4300000: Clip_1
+    4300002: Spring_1
+    4300004: Clicker
+    4300006: Pen_Cartridge
+    4300008: Pen_Shell_1
   materials:
     importMaterials: 1
     materialName: 0
@@ -41,7 +61,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -70,7 +90,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

@@ -48,10 +48,6 @@ public class PlayerMovement : MonoBehaviour {
 			transform.rotation = Quaternion.identity;
 		}
 
-		if (grounded == false && rb.velocity.y == 0) {
-			grounded = true;
-		}
-
 		if (Input.GetKeyDown (KeyCode.Space) && grounded == true) {
 			hasJumped = true;
 		}
@@ -61,7 +57,7 @@ public class PlayerMovement : MonoBehaviour {
 			grounded = false;
 			hasJumped = false;
 		}
-
+			
 		if (Input.GetMouseButtonDown (1)) {
 			if (Time.time - lastClickTime < catchTime) {
 				SoundManager.instance.PlayNamedClipOn (chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);	
@@ -74,7 +70,10 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		
+		// moved to fixedupdate so after force affects velocity
+		if (grounded == false && Mathf.Abs(rb.velocity.y) < 0.01f) {
+			grounded = true;
+		}
 	}
 
     public void startClimbing(){

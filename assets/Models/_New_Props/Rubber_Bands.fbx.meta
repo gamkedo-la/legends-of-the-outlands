@@ -1,17 +1,22 @@
 fileFormatVersion: 2
-guid: bd35df4ff1e0b4b33b7a28c75a0fbf8b
-timeCreated: 1454530345
+guid: 0cc3666fa3da24533aa111d6b36b2668
+timeCreated: 1454579170
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Toaster
-    7400000: Default Take
-    9500000: //RootNode
+    100000: Bent_Rubber_Band
+    100002: Round_Rubber_Band
+    100004: //RootNode
+    400000: Bent_Rubber_Band
+    400002: Round_Rubber_Band
+    400004: //RootNode
+    2300000: Bent_Rubber_Band
+    2300002: Round_Rubber_Band
+    3300000: Bent_Rubber_Band
+    3300002: Round_Rubber_Band
+    4300000: Round_Rubber_Band
+    4300002: Bent_Rubber_Band
   materials:
     importMaterials: 1
     materialName: 0
@@ -41,7 +46,7 @@ ModelImporter:
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -70,7 +75,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
