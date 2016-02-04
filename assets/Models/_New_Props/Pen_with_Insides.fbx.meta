@@ -11,27 +11,37 @@ ModelImporter:
     100006: Pen_Shell_1
     100008: //RootNode
     100010: Spring_1
+    100012: Pen_Shell_Lower
+    100014: Pen_Shell_Upper
     400000: Clicker
     400002: Clip_1
     400004: Pen_Cartridge
     400006: Pen_Shell_1
     400008: //RootNode
     400010: Spring_1
+    400012: Pen_Shell_Lower
+    400014: Pen_Shell_Upper
     2300000: Clicker
     2300002: Clip_1
     2300004: Pen_Cartridge
     2300006: Pen_Shell_1
     2300008: Spring_1
+    2300010: Pen_Shell_Lower
+    2300012: Pen_Shell_Upper
     3300000: Clicker
     3300002: Clip_1
     3300004: Pen_Cartridge
     3300006: Pen_Shell_1
     3300008: Spring_1
+    3300010: Pen_Shell_Lower
+    3300012: Pen_Shell_Upper
     4300000: Clip_1
     4300002: Spring_1
     4300004: Clicker
     4300006: Pen_Cartridge
     4300008: Pen_Shell_1
+    4300010: Pen_Shell_Upper
+    4300012: Pen_Shell_Lower
   materials:
     importMaterials: 1
     materialName: 0
