@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour {
 
 	float lastMouseMovement;
 	Vector3 moveCamTo;
+	bool lateralCamChase = false;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void MouseCamLook(){
-		
+
 		if (Input.GetAxis ("Mouse Y") < 0.0f) {
 			Camera.main.transform.Rotate(1.0f * Time.deltaTime * virRotateSpeed, 0, 0);
 		} else if (Input.GetAxis ("Mouse Y") > 0.0f) {
@@ -28,11 +29,23 @@ public class CameraController : MonoBehaviour {
 
 	}
 
-	// Update is called once per frame
-	void Update () {
-//		MouseCamLook ();
+	void LateUpdate () {
+		lateralCamChase = (Mathf.Abs(Input.GetAxis("Horizontal")) + Mathf.Abs(Input.GetAxis("Vertical"))) > 0.1f;
+
+		if(lateralCamChase) {
+			CamPosUpdate ();
+		}
+	}
+
+	void FixedUpdate () {
+		if(lateralCamChase == false) {
+			CamPosUpdate ();
+		}
+	}
+
+	void CamPosUpdate() {
 		moveCamTo = transform.position - transform.forward * cameraForwardMod + Vector3.up * cameraUpMod;
-		Camera.main.transform.LookAt (transform.position + Vector3.up * cameraUpTiltOffset);
-		Camera.main.transform.position = Camera.main.transform.position * bias + moveCamTo * (1.0f - bias);	
+		Camera.main.transform.position = Camera.main.transform.position * bias + moveCamTo * (1.0f - bias);    
+		Camera.main.transform.LookAt(transform.position + Vector3.up * cameraUpTiltOffset);
 	}
 }
