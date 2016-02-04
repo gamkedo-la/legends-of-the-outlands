@@ -22,7 +22,7 @@ public class ClimbingController : MonoBehaviour {
         //If player hits top of climbing zone, push player forward & up out of zone
         }else if(collider.gameObject.name == "ClimbableTop" && climbing){
             movementScript.stopClimbing();
-            player.position += player.up * 0.1f;
+            player.position += player.up * 0.3f;
             player.position += player.forward * 0.5f;
             climbing = false;
         }

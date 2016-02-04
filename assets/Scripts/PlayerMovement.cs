@@ -34,8 +34,7 @@ public class PlayerMovement : MonoBehaviour {
             {
                 transform.Rotate(0, 1.0f * Time.deltaTime * rotateSpeed, 0);
             }
-        } else
-        {
+        }else{
             transform.position += transform.up * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
         }
@@ -72,10 +71,6 @@ public class PlayerMovement : MonoBehaviour {
 			lastClickTime = Time.time;
 		}
 		Movement ();
-
-        if(Physics.Raycast(transform.position, -transform.up, 2.0f, 0)){
-
-        }
 	}
 
 	void FixedUpdate(){
@@ -84,22 +79,11 @@ public class PlayerMovement : MonoBehaviour {
 
     public void startClimbing(){
         isClimbing = true;
-        transform.Find("WindUpRat").GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().useGravity = false;
     }
 
     public void stopClimbing(){
         isClimbing = false;
-        transform.Find("WindUpRat").GetComponent<Rigidbody>().useGravity = true;
-    }
-
-    void OnTriggerEnter(Collider collider)
-    {
-        Debug.Log("generic collision");
-        if (collider.gameObject.tag == "Climbable")
-        {
-            Debug.Log("Player Collision");
-            startClimbing();
-
-        }
+        GetComponent<Rigidbody>().useGravity = true;
     }
 }
