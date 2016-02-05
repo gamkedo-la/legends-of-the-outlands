@@ -11,10 +11,14 @@ public class PlayerMovement : MonoBehaviour {
 	public float jumpPower = 20.0f;
 	public bool grounded = true;
     public bool isClimbing = false;
+    public Transform carrying = null;
+    public float grabDistance;
 
     bool hasJumped = false;
 	float lastClickTime;
+    float carryingHeightAdjustment;
 	Rigidbody rb;
+    float carryDistance;
 
 	void Start() {
 		rb = GetComponentInChildren<Rigidbody> ();
@@ -67,6 +71,30 @@ public class PlayerMovement : MonoBehaviour {
 			lastClickTime = Time.time;
 		}
 		Movement ();
+
+        if (Input.GetMouseButtonDown(0) && carrying == null){
+            grab();
+            Ray ray = new Ray(transform.position, transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, grabDistance))
+            {
+                if (hit.transform.tag == "Carryable")
+                {
+                    carrying = hit.transform;
+                    carrying.GetComponent<Rigidbody>().isKinematic = true;
+                    carryingHeightAdjustment = carrying.GetComponent<Renderer>().bounds.extents.y;
+                    carryDistance = hit.distance;
+                }
+            }
+        }
+        else if (Input.GetMouseButtonDown(0)){
+            release();
+        }
+
+        if(carrying != null){
+            carrying.position = transform.position + transform.forward * carryDistance + transform.up * carryingHeightAdjustment;
+        }
 	}
 
 	void FixedUpdate(){
@@ -84,5 +112,13 @@ public class PlayerMovement : MonoBehaviour {
     public void stopClimbing(){
         isClimbing = false;
         GetComponent<Rigidbody>().useGravity = true;
+    }
+
+    void grab(){
+    }
+
+    void release(){
+        carrying.GetComponent<Rigidbody>().isKinematic = false;
+        carrying = null;
     }
 }
