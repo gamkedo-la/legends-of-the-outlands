@@ -5,7 +5,8 @@ public class ClimbingController : MonoBehaviour {
 
     private Transform player;
     private PlayerMovement movementScript;
-    private bool climbing = false; //Duplicate in PlayerMovement
+    [SerializeField] private bool climbing = false; //Duplicate in PlayerMovement
+    int debugMessageCounter = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -14,13 +15,7 @@ public class ClimbingController : MonoBehaviour {
 	}
 	
     void OnTriggerEnter(Collider collider){
-        //If player hits bottom of climbing zone, don't go through floor
-        if(collider.gameObject.name == "ClimbableBottom" && Input.GetKeyDown(KeyCode.S))
-        {
-            movementScript.stopClimbing();
-            climbing = false;
-        //If player hits top of climbing zone, push player forward & up out of zone
-        }else if(collider.gameObject.name == "ClimbableTop" && climbing){
+        if(collider.gameObject.name == "ClimbableTop" && climbing){
             movementScript.stopClimbing();
             player.position += player.up * 0.3f;
             player.position += player.forward * 0.5f;
@@ -28,13 +23,22 @@ public class ClimbingController : MonoBehaviour {
         }
     }
 
-    void OnTriggerStay(Collider collider)
-    {
-        //If player holds lmb in climbing zone, start climbing
-        if (!climbing && collider.gameObject.tag == "Climbable" && Input.GetMouseButtonDown(0))
+    void OnTriggerStay(Collider collider){
+        //If player hits bottom of climbing zone, don't go through floor
+        if (climbing && collider.gameObject.name == "ClimbableBottom" && Input.GetAxis("Vertical") < 0)
         {
+            movementScript.stopClimbing();
+            climbing = false;
+            //If player hits top of climbing zone, push player forward & up out of zone
+        }
+        //If player holds lmb in climbing zone, start climbing
+        else if (!climbing && collider.gameObject.tag == "Climbable" && Input.GetMouseButtonDown(0)){
             movementScript.startClimbing();
             climbing = true;
+        }
+        else if(climbing && collider.gameObject.tag == "Climbable" && Input.GetKeyDown(KeyCode.Space)){
+            movementScript.stopClimbing();
+            climbing = false;
         }
     }
 
@@ -46,11 +50,12 @@ public class ClimbingController : MonoBehaviour {
         }
     }
 
-    void FixedUpdate(){
+    void Update(){
         //Stop climbing on mouse release
         if(climbing && Input.GetMouseButtonUp(0)){
             movementScript.stopClimbing();
             climbing = false;
+            Debug.Log(debugMessageCounter++ + ": 0:1");
         }
     }
 }

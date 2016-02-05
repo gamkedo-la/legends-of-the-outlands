@@ -107,6 +107,7 @@ public class PlayerMovement : MonoBehaviour {
     public void startClimbing(){
         isClimbing = true;
         GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
     public void stopClimbing(){
