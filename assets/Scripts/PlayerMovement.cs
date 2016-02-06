@@ -12,7 +12,8 @@ public class PlayerMovement : MonoBehaviour {
 	public bool grounded = true;
     public bool isClimbing = false;
     public Transform carrying = null;
-    public float grabDistance;
+    public float grabDistance = 1.5f;
+    public float minCarryDistance = 1f;
 
     bool hasJumped = false;
 	float lastClickTime;
@@ -84,7 +85,8 @@ public class PlayerMovement : MonoBehaviour {
                     carrying = hit.transform;
                     carrying.GetComponent<Rigidbody>().isKinematic = true;
                     carryingHeightAdjustment = carrying.GetComponent<Renderer>().bounds.extents.y;
-                    carryDistance = hit.distance;
+                    carryDistance = hit.distance < minCarryDistance ? minCarryDistance : hit.distance;
+                    Debug.Log("Carry dist: " + carryDistance);
                 }
             }
         }
