@@ -5,8 +5,10 @@ public class ClimbingController : MonoBehaviour {
 
     private Transform player;
     private PlayerMovement movementScript;
-    [SerializeField] private bool climbing = false; //Duplicate in PlayerMovement
-    int debugMessageCounter = 0;
+    public float maxStartClimbingAngle = 60;
+    float topVerticalAdjustment = 0.3f, topHorizontalAdjustment = 0.5f;
+    bool lmbDown = false;
+    bool inClimbableBottom = false, inClimbable = false, inClimbableTop = false;
 
 	// Use this for initialization
 	void Start () {
@@ -15,47 +17,60 @@ public class ClimbingController : MonoBehaviour {
 	}
 	
     void OnTriggerEnter(Collider collider){
-        if(collider.gameObject.name == "ClimbableTop" && climbing){
-            movementScript.stopClimbing();
-            player.position += player.up * 0.3f;
-            player.position += player.forward * 0.5f;
-            climbing = false;
-        }
+        if (collider.gameObject.name == "ClimbableBottom") { inClimbableBottom = true; }
+        if (collider.gameObject.name == "ClimbableTop") { inClimbableTop = true; }
+        if (collider.gameObject.tag == "Climbable") { inClimbable = true; }
     }
 
     void OnTriggerStay(Collider collider){
-        //If player hits bottom of climbing zone, don't go through floor
-        if (climbing && collider.gameObject.name == "ClimbableBottom" && Input.GetAxis("Vertical") < 0)
-        {
-            movementScript.stopClimbing();
-            climbing = false;
-            //If player hits top of climbing zone, push player forward & up out of zone
-        }
         //If player holds lmb in climbing zone, start climbing
-        else if (!climbing && collider.gameObject.tag == "Climbable" && Input.GetMouseButtonDown(0)){
-            movementScript.startClimbing();
-            climbing = true;
-        }
-        else if(climbing && collider.gameObject.tag == "Climbable" && Input.GetKeyDown(KeyCode.Space)){
-            movementScript.stopClimbing();
-            climbing = false;
+        if (!movementScript.isClimbing && collider.gameObject.tag == "Climbable" && lmbDown){
+            Vector3 colliderRight = collider.GetComponent<Transform>().right;
+
+            if (Vector3.Angle(player.forward, colliderRight) < maxStartClimbingAngle){
+                player.rotation = Quaternion.LookRotation(colliderRight);
+                movementScript.startClimbing();
+            }
         }
     }
 
     void OnTriggerExit(Collider collider){
+        if (collider.gameObject.name == "ClimbableBottom") { inClimbableBottom = false; }
+        if (collider.gameObject.name == "ClimbableTop") { inClimbableTop = false; }
+
         //Stop climbing if player exits climing zone
-        if (climbing && collider.gameObject.tag == "Climbable"){
+        if (movementScript.isClimbing && collider.gameObject.tag == "Climbable"){
             movementScript.stopClimbing();
-            climbing = false;
+            inClimbable = false;
         }
     }
 
     void Update(){
-        //Stop climbing on mouse release
-        if(climbing && Input.GetMouseButtonUp(0)){
-            movementScript.stopClimbing();
-            climbing = false;
-            Debug.Log(debugMessageCounter++ + ": 0:1");
+        if (Input.GetMouseButtonDown(0)){
+            lmbDown = true;
+        }
+        else if (Input.GetMouseButtonUp(0)){
+            lmbDown = false;
+        }
+
+        if (movementScript.isClimbing) {
+            //If player hits bottom of climbing zone, don't go through floor
+            if (inClimbableBottom && Input.GetAxis("Vertical") < 0) {
+                movementScript.stopClimbing();
+            }
+            //Stop climbing on mouse release
+            else if (Input.GetMouseButtonUp(0)){
+                movementScript.stopClimbing();
+            }
+            //Stop climbing if the player jumps
+            else if (inClimbable && Input.GetKeyDown(KeyCode.Space)){
+                movementScript.stopClimbing();
+            }
+            //If player hits top of climbing zone, push player forward & up out of zone
+            if (inClimbableTop){
+                movementScript.stopClimbing();
+                player.position += player.up * topVerticalAdjustment + transform.forward * topHorizontalAdjustment;
+            }
         }
     }
 }

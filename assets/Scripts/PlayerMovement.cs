@@ -11,18 +11,20 @@ public class PlayerMovement : MonoBehaviour {
 	public float jumpPower = 20.0f;
 	public bool grounded = true;
     public bool isClimbing = false;
-    public Transform carrying = null;
-    public float grabDistance = 1.5f;
-    public float minCarryDistance = 1f;
-
+    public float maxGrabDistance = 1.5f;
+    
     bool hasJumped = false;
-	float lastClickTime;
+    Rigidbody rb;
+    public Transform carrying = null;
+    float lastClickTime;
     float carryingHeightAdjustment;
-	Rigidbody rb;
     float carryDistance;
+    float minCarryingDistance;
 
-	void Start() {
-		rb = GetComponentInChildren<Rigidbody> ();
+    void Start() {
+        BoxCollider collider = GetComponent<BoxCollider>();
+        minCarryingDistance = collider.bounds.extents.z + collider.center.z;
+        rb = GetComponentInChildren<Rigidbody> ();
 	}
 
 	void Movement(){
@@ -39,7 +41,8 @@ public class PlayerMovement : MonoBehaviour {
             {
                 transform.Rotate(0, 1.0f * Time.deltaTime * rotateSpeed, 0);
             }
-        }else{
+        }
+        else {
             transform.position += transform.up * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
         }
@@ -66,37 +69,15 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetMouseButtonDown (1)) {
 			if (Time.time - lastClickTime < catchTime) {
 				SoundManager.instance.PlayNamedClipOn (chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);	
-			} else {
+			}
+            else {
 				SoundManager.instance.PlayNamedClipOn (squeak, transform.position, gameObject.name, "squeak", 1.0f, transform);	
 			}
 			lastClickTime = Time.time;
 		}
 		Movement ();
 
-        if (Input.GetMouseButtonDown(0) && carrying == null){
-            grab();
-            Ray ray = new Ray(transform.position, transform.forward);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, grabDistance))
-            {
-                if (hit.transform.tag == "Carryable")
-                {
-                    carrying = hit.transform;
-                    carrying.GetComponent<Rigidbody>().isKinematic = true;
-                    carryingHeightAdjustment = carrying.GetComponent<Renderer>().bounds.extents.y;
-                    carryDistance = hit.distance < minCarryDistance ? minCarryDistance : hit.distance;
-                    Debug.Log("Carry dist: " + carryDistance);
-                }
-            }
-        }
-        else if (Input.GetMouseButtonDown(0)){
-            release();
-        }
-
-        if(carrying != null){
-            carrying.position = transform.position + transform.forward * carryDistance + transform.up * carryingHeightAdjustment;
-        }
+        handleCarrying();
 	}
 
 	void FixedUpdate(){
@@ -117,11 +98,30 @@ public class PlayerMovement : MonoBehaviour {
         GetComponent<Rigidbody>().useGravity = true;
     }
 
-    void grab(){
-    }
+    private void handleCarrying(){
+        //Pickup object
+        if (Input.GetMouseButtonDown(0) && carrying == null){
+            RaycastHit hit;
 
-    void release(){
-        carrying.GetComponent<Rigidbody>().isKinematic = false;
-        carrying = null;
+            if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance) && hit.transform.tag == "Carryable"){
+                carrying = hit.transform;
+                carrying.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity
+
+                //Determine how far the object must be from the player not to clip the floor or push the player backwards
+                Vector3 carryingExtents = carrying.GetComponent<Collider>().bounds.extents;
+                carryingHeightAdjustment = carryingExtents.y;
+                carryDistance = Mathf.Max(Mathf.Sqrt(carryingExtents.x * carryingExtents.x + carryingExtents.y * carryingExtents.y) + minCarryingDistance,
+                    Vector3.Distance(transform.position, new Vector3(carrying.position.x, transform.position.y, carrying.position.z)));
+            }
+        }
+        //Drop object
+        else if (Input.GetMouseButtonDown(0)){
+            carrying.GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
+            carrying = null;
+        }
+        //If an object is being carried, update the position of the object
+        if (carrying != null){
+            carrying.position = transform.position + transform.forward * carryDistance + transform.up * carryingHeightAdjustment;
+        }
     }
 }
