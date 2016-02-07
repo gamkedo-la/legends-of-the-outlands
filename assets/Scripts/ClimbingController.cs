@@ -25,10 +25,10 @@ public class ClimbingController : MonoBehaviour {
     void OnTriggerStay(Collider collider){
         //If player holds lmb in climbing zone, start climbing
         if (!movementScript.isClimbing && collider.gameObject.tag == "Climbable" && lmbDown){
-            Vector3 colliderRight = collider.GetComponent<Transform>().right;
+            Vector3 colliderForward = collider.GetComponent<Transform>().forward;
 
-            if (Vector3.Angle(player.forward, colliderRight) < maxStartClimbingAngle){
-                player.rotation = Quaternion.LookRotation(colliderRight);
+            if (Vector3.Angle(player.forward, colliderForward) < maxStartClimbingAngle){
+                player.rotation = Quaternion.LookRotation(colliderForward);
                 movementScript.startClimbing();
             }
         }
