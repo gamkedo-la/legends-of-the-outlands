@@ -3,17 +3,16 @@ using System.Collections;
 
 public class ClimbingController : MonoBehaviour {
 
-    private Transform player;
     private PlayerMovement movementScript;
     public float maxStartClimbingAngle = 60;
+    float climbingDistanceOffset = -0.35f;
     float topVerticalAdjustment = 0.3f, topHorizontalAdjustment = 0.5f;
     bool lmbDown = false;
     bool inClimbableBottom = false, inClimbable = false, inClimbableTop = false;
 
 	// Use this for initialization
 	void Start () {
-        player = transform.root;
-        movementScript = transform.root.GetComponent<PlayerMovement>();
+        movementScript = GetComponent<PlayerMovement>();
 	}
 	
     void OnTriggerEnter(Collider collider){
@@ -24,11 +23,12 @@ public class ClimbingController : MonoBehaviour {
 
     void OnTriggerStay(Collider collider){
         //If player holds lmb in climbing zone, start climbing
-        if (!movementScript.isClimbing && collider.gameObject.tag == "Climbable" && lmbDown){
+        if (!movementScript.climbing && collider.gameObject.tag == "Climbable" && lmbDown){
             Vector3 colliderForward = collider.GetComponent<Transform>().forward;
 
-            if (Vector3.Angle(player.forward, colliderForward) < maxStartClimbingAngle){
-                player.rotation = Quaternion.LookRotation(colliderForward);
+            if (Vector3.Angle(transform.forward, colliderForward) < maxStartClimbingAngle){
+                transform.rotation = Quaternion.LookRotation(colliderForward);
+                transform.position += (Vector3.Dot((transform.position - collider.transform.position),(-collider.transform.forward)) + climbingDistanceOffset) * transform.forward;
                 movementScript.startClimbing();
             }
         }
@@ -39,21 +39,21 @@ public class ClimbingController : MonoBehaviour {
         if (collider.gameObject.name == "ClimbableTop") { inClimbableTop = false; }
 
         //Stop climbing if player exits climing zone
-        if (movementScript.isClimbing && collider.gameObject.tag == "Climbable"){
+        if (movementScript.climbing && collider.gameObject.tag == "Climbable"){
             movementScript.stopClimbing();
             inClimbable = false;
         }
     }
 
     void Update(){
-        if (Input.GetMouseButtonDown(0)){
+        if (Input.GetMouseButton(0)){
             lmbDown = true;
         }
-        else if (Input.GetMouseButtonUp(0)){
+        else{
             lmbDown = false;
         }
 
-        if (movementScript.isClimbing) {
+        if (movementScript.climbing) {
             //If player hits bottom of climbing zone, don't go through floor
             if (inClimbableBottom && Input.GetAxis("Vertical") < 0) {
                 movementScript.stopClimbing();
@@ -69,7 +69,7 @@ public class ClimbingController : MonoBehaviour {
             //If player hits top of climbing zone, push player forward & up out of zone
             if (inClimbableTop){
                 movementScript.stopClimbing();
-                player.position += player.up * topVerticalAdjustment + transform.forward * topHorizontalAdjustment;
+                transform.position += transform.up * topVerticalAdjustment + transform.forward * topHorizontalAdjustment;
             }
         }
     }
