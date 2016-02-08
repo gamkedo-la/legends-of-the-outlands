@@ -1,114 +1,131 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : MonoBehaviour
+{
 
-	public float movementSpeed = 5.0f;
-	public float rotateSpeed = 50.0f;
-	public float catchTime = 0.25f;
-	public AudioClip squeak;
-	public AudioClip chatter;
-	public float jumpPower = 20.0f;
-	public bool grounded = true;
+    public float movementSpeed = 5.0f;
+    public float rotateSpeed = 50.0f;
+    public float catchTime = 0.25f;
+    public AudioClip squeak;
+    public AudioClip chatter;
+    public float jumpPower = 20.0f;
+    public bool grounded = true;
     public bool climbing = false;
     public float maxGrabDistance = 1.5f;
     public Vector3 carryingOffset = new Vector3(0, 0, 1.0f);
-    
+
     bool hasJumped = false;
     bool sliding = false;
     Rigidbody rb;
     Transform carrying = null;
     float lastClickTime;
-    float minCarryingDistance;
+    float minCarryingDistance; //TODO check to see if this is needed
     Vector3 moveableOffset;
     Transform storeOldParent;
 
-    void Start() {
+    void Start()
+    {
         BoxCollider collider = GetComponent<BoxCollider>();
         minCarryingDistance = collider.bounds.extents.z + collider.center.z;
-        rb = GetComponentInChildren<Rigidbody> ();
-<<<<<<< HEAD
+        rb = GetComponentInChildren<Rigidbody>();
+        TP_Camera.UseExistingOrCreateNewMainCamera();
     }
-=======
-		TP_Camera.UseExistingOrCreateNewMainCamera ();
-	}
->>>>>>> origin/master
 
-	void Movement(){
+    void Movement()
+    {
         if (!climbing && !sliding)
         {
-			if (Mathf.Abs(Input.GetAxis ("Vertical")) > 0.5f) {
-				Quaternion angleNow = transform.rotation;
-				Quaternion angleGoal = Quaternion.LookRotation (Quaternion.AngleAxis (TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
-				transform.rotation = Quaternion.Slerp (angleNow, angleGoal, Time.deltaTime * 5.0f);
-//				transform.LookAt (transform.position + Quaternion.AngleAxis (TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
-			}
-			transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+            if (Mathf.Abs(Input.GetAxis("Vertical")) > 0.5f)
+            {
+                Quaternion angleNow = transform.rotation;
+                Quaternion angleGoal = Quaternion.LookRotation(Quaternion.AngleAxis(TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
+                transform.rotation = Quaternion.Slerp(angleNow, angleGoal, Time.deltaTime * 5.0f);
+                //				transform.LookAt (transform.position + Quaternion.AngleAxis (TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
+            }
+            transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
 
         }
-        else if(climbing){
+        else if (climbing)
+        {//TODO recheck the climbing/sliding movement to ensure it works with the new camera
             transform.position += transform.up * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
         }
-        else{
+        else
+        {
             transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
         }
     }
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown (KeyCode.Escape)) {
-			Application.Quit ();
-		}
-		if (Input.GetKeyDown (KeyCode.R)) {
-			transform.rotation = Quaternion.identity;
-		}
 
-		if (Input.GetKeyDown (KeyCode.Space) && grounded == true && !sliding) {
-			hasJumped = true;
-		}
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.rotation = Quaternion.identity;
+        }
 
-		if (hasJumped) {
-			rb.AddForce (transform.up * jumpPower);
-			grounded = false;
-			hasJumped = false;
-		}
-			
-		if (Input.GetMouseButtonDown (1)) {
-			if (Time.time - lastClickTime < catchTime) {
-				SoundManager.instance.PlayNamedClipOn (chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);	
-			}
-            else {
-				SoundManager.instance.PlayNamedClipOn (squeak, transform.position, gameObject.name, "squeak", 1.0f, transform);	
-			}
-			lastClickTime = Time.time;
-		}
-		Movement ();
+        if (Input.GetKeyDown(KeyCode.Space) && grounded == true && !sliding)
+        {
+            hasJumped = true;
+        }
+
+        if (hasJumped)
+        {
+            rb.AddForce(transform.up * jumpPower);
+            grounded = false;
+            hasJumped = false;
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Time.time - lastClickTime < catchTime)
+            {
+                SoundManager.instance.PlayNamedClipOn(chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);
+            }
+            else
+            {
+                SoundManager.instance.PlayNamedClipOn(squeak, transform.position, gameObject.name, "squeak", 1.0f, transform);
+            }
+            lastClickTime = Time.time;
+        }
+        Movement();
 
         handleCarrying();
-	}
+    }
 
-	void FixedUpdate(){
-		// moved to fixedupdate so after force affects velocity
-		if (grounded == false && Mathf.Abs(rb.velocity.y) < 0.01f) {
-			grounded = true;
-		}
-	}
+    void FixedUpdate()
+    {
+        // moved to fixedupdate so after force affects velocity
+        if (grounded == false && Mathf.Abs(rb.velocity.y) < 0.01f)
+        {
+            grounded = true;
+        }
+    }
 
-    public void startClimbing(){
+    public void startClimbing()
+    {
         climbing = true;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
-    public void stopClimbing(){
+    public void stopClimbing()
+    {
         climbing = false;
         GetComponent<Rigidbody>().useGravity = true;
     }
 
-    private void handleCarrying(){
+    private void handleCarrying()
+    {
         //Pickup object
-        if (Input.GetMouseButtonDown(0) && carrying == null) {
+        if (Input.GetMouseButtonDown(0) && carrying == null)
+        {
             RaycastHit hit;
 
             if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance) && hit.transform.tag == "Carryable")
@@ -134,7 +151,8 @@ public class PlayerMovement : MonoBehaviour {
             releaseObject();
         }
         //If an object is being carried/slid, update the position of the object
-        if (carrying != null){
+        if (carrying != null)
+        {
             carrying.position = transform.position
                 + transform.forward * moveableOffset.z
                 + transform.up * moveableOffset.y
@@ -143,7 +161,8 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-    void pickupObject(RaycastHit hit){
+    void pickupObject(RaycastHit hit)
+    {
         Transform carryingPoint = hit.transform.Find("CarryingPoint");
         carrying = new GameObject().transform;
 
@@ -168,13 +187,16 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     //Drop carried object
-    void releaseObject(){
-        if (!sliding) {
+    void releaseObject()
+    {
+        if (!sliding)
+        {
             carrying.GetChild(0).GetComponent<Collider>().enabled = true;
             carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
             carrying.GetChild(0).parent = carrying.parent;
         }
-        else{
+        else
+        {
             carrying.GetComponent<Rigidbody>().isKinematic = false;
         }
         carrying = null;
