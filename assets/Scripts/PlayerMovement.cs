@@ -25,22 +25,21 @@ public class PlayerMovement : MonoBehaviour {
         BoxCollider collider = GetComponent<BoxCollider>();
         minCarryingDistance = collider.bounds.extents.z + collider.center.z;
         rb = GetComponentInChildren<Rigidbody> ();
+		TP_Camera.UseExistingOrCreateNewMainCamera ();
 	}
 
 	void Movement(){
         if (!isClimbing)
         {
-            transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+			if (Mathf.Abs(Input.GetAxis ("Vertical")) > 0.5f) {
+				Quaternion angleNow = transform.rotation;
+				Quaternion angleGoal = Quaternion.LookRotation (Quaternion.AngleAxis (TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
+				transform.rotation = Quaternion.Slerp (angleNow, angleGoal, Time.deltaTime * 5.0f);
+//				transform.LookAt (transform.position + Quaternion.AngleAxis (TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
+			}
+			transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
 
-            if (Input.GetAxis("Mouse X") < 0.0f)
-            {
-                transform.Rotate(0, -1.0f * Time.deltaTime * rotateSpeed, 0);
-            }
-            else if (Input.GetAxis("Mouse X") > 0.0f)
-            {
-                transform.Rotate(0, 1.0f * Time.deltaTime * rotateSpeed, 0);
-            }
         }
         else {
             transform.position += transform.up * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
