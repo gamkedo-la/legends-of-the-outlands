@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StretchBandFocus : MonoBehaviour {
+public class StretchBandFocus : Photon.MonoBehaviour {
 
 	public GameObject bandWhole;
 	public GameObject bandStretched;
@@ -18,19 +18,30 @@ public class StretchBandFocus : MonoBehaviour {
 	bool isStretching = false;
 
 	public void playerLifted() {
+		photonView.RPC("playerLift", PhotonTargets.All);
+	}
+
+	public void playerDropped() {
+		photonView.RPC("playerDrop", PhotonTargets.All);
+	}
+
+	[PunRPC]
+	void playerLift(){
 		Debug.Log("stretching band");
 		isStretching = true;
 		bandWhole.SetActive(isStretching == false);
 		bandStretched.SetActive( isStretching );
 	}
 
-	public void playerDropped() {
+	[PunRPC]
+	void playerDrop(){
 		Debug.Log("band released");
 		isStretching = false;
 	}
 
 	// Use this for initialization
 	void Start () {
+		PhotonView photonView = PhotonView.Get(this);
 		stretchFocus = transform.position;
 		isStretching = false;
 		bandWhole.SetActive(isStretching == false);

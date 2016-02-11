@@ -14,11 +14,9 @@ public class NetworkObject : Photon.MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (matchSettings.singlePlayer == false) {
-			if (!photonView.isMine)
-			{
+						
 				transform.position = Vector3.Lerp(transform.position, this.correctObjectPos, Time.deltaTime * 5);
 				transform.rotation = Quaternion.Lerp(transform.rotation, this.correctObjectRot, Time.deltaTime * 5);
-			}
 		}
 	}
 
