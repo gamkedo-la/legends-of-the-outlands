@@ -5,9 +5,15 @@ using Photon;
 public class RandomMatchmaker : Photon.PunBehaviour {
 
 	public Transform spawnPoint;
+	public bool singlePlayer = false;
 
+	SinglePlayerSetup single;
 	string whichRat;
 	RoomOptions roomOptions;
+
+	void Awake(){
+		single = GetComponent<SinglePlayerSetup> ();
+	}
 
 	public override void OnJoinedLobby(){
 		PhotonNetwork.JoinRandomRoom ();
@@ -35,6 +41,7 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 			}
 		}
 		GameObject monster = PhotonNetwork.Instantiate(whichRat , spawnPoint.position, Quaternion.identity, 0);
+		Debug.Log ("I just spawned a network character");
 		PlayerMovement controller = monster.GetComponent<PlayerMovement> ();
 		controller.enabled = true;
 //		CameraController playerCam = monster.GetComponent<CameraController> ();
@@ -49,16 +56,16 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		PhotonNetwork.ConnectUsingSettings ("0.1");
-		roomOptions = new RoomOptions() {isVisible = true, maxPlayers = 2};
+		if (singlePlayer == false) {
+			roomOptions = new RoomOptions () { isVisible = true, maxPlayers = 2 };
+			PhotonNetwork.ConnectUsingSettings ("0.1");
+		} else {
+			single.SinglePlayer (spawnPoint);
+			Debug.Log ("I just spawned a single player character");
+		}
 	}
 
 	void OnGUI(){
 		GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
-	}
-
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }
