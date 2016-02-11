@@ -182,6 +182,7 @@ public class PlayerMovement : MonoBehaviour
             carrying.position = hit.transform.position;
             carrying.rotation = hit.transform.rotation;
         }
+		hit.collider.SendMessage("playerLifted", SendMessageOptions.DontRequireReceiver);
         hit.transform.parent = carrying.transform;
         moveableOffset = carryingOffset;
     }
@@ -189,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
     //Drop carried object
     void releaseObject()
     {
+		carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
         if (!sliding)
         {
             carrying.GetChild(0).GetComponent<Collider>().enabled = true;
@@ -199,6 +201,7 @@ public class PlayerMovement : MonoBehaviour
         {
             carrying.GetComponent<Rigidbody>().isKinematic = false;
         }
+		Destroy(carrying.gameObject); // seemed to accumulate New GO's without this, I hope it doesn't harm other carryables?
         carrying = null;
         sliding = false;
     }
