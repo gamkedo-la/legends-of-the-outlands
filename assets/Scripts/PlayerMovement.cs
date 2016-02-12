@@ -199,6 +199,7 @@ public class PlayerMovement : MonoBehaviour
         {
             carrying.GetComponent<Rigidbody>().isKinematic = false;
         }
+        Destroy(carrying);
         carrying = null;
         sliding = false;
     }
