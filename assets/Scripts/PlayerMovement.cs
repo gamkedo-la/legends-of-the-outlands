@@ -182,6 +182,7 @@ public class PlayerMovement : MonoBehaviour
             carrying.position = hit.transform.position;
             carrying.rotation = hit.transform.rotation;
         }
+		hit.collider.SendMessage("playerLifted", SendMessageOptions.DontRequireReceiver);
         hit.transform.parent = carrying.transform;
         moveableOffset = carryingOffset;
     }
@@ -189,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
     //Drop carried object
     void releaseObject()
     {
+		carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
         if (!sliding)
         {
             carrying.GetChild(0).GetComponent<Collider>().enabled = true;
@@ -199,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
         {
             carrying.GetComponent<Rigidbody>().isKinematic = false;
         }
-        Destroy(carrying);
+		Destroy(carrying.gameObject); // accumulates new GO's without this
         carrying = null;
         sliding = false;
     }
