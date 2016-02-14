@@ -140,7 +140,6 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (hit.transform != null && hit.transform.tag == "Slideable")
             {
-                //-----------------------------RESUSE FOR PUSH/PULL-----------------------------------
                 //Determine how far the object must be from the player not to clip the floor or push the player backwards
                 carrying = hit.transform;
                 carrying.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity

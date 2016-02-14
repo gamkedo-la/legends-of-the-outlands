@@ -8,6 +8,7 @@ public class ClimbingController : MonoBehaviour {
     float climbingDistanceOffset = -0.35f;
     float topVerticalAdjustment = 0.3f, topHorizontalAdjustment = 1.0f;
     bool lmbDown = false;
+    bool movingForward = false;
     bool inClimbableBottom = false, inClimbable = false, inClimbableTop = false;
 
 	// Use this for initialization
@@ -23,7 +24,7 @@ public class ClimbingController : MonoBehaviour {
 
     void OnTriggerStay(Collider collider){
         //If player holds lmb in climbing zone, start climbing
-        if (!movementScript.climbing && collider.gameObject.tag == "Climbable" && lmbDown && !inClimbableTop){
+        if (!movementScript.climbing && lmbDown && movingForward && collider.gameObject.tag == "Climbable" && !inClimbableTop){
             lmbDown = false;
             Vector3 colliderForward = collider.GetComponent<Transform>().forward;
 
@@ -52,6 +53,13 @@ public class ClimbingController : MonoBehaviour {
         }
         else if(Input.GetMouseButtonUp(0)){
             lmbDown = false;
+        }
+
+        if(Input.GetAxis("Vertical") > 0){
+            movingForward = true;
+        }
+        else{
+            movingForward = false;
         }
 
         if (movementScript.climbing) {
