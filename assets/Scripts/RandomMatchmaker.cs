@@ -7,20 +7,15 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	public Transform spawnPoint;
 	public bool singlePlayer = false;
 
-	SinglePlayerSetup single;
 	string whichRat;
 	RoomOptions roomOptions;
-
-	void Awake(){
-		single = GetComponent<SinglePlayerSetup> ();
-	}
 
 	public override void OnJoinedLobby(){
 		PhotonNetwork.JoinRandomRoom ();
 	}
 
-	public override void OnJoinedRoom(){
-		if (PhotonNetwork.playerList.Length == 1) {
+	void JoinRoomAndCreateCharacter(){
+		if (singlePlayer == false && PhotonNetwork.playerList.Length == 1) {
 			whichRat = (Random.Range (0.0f, 1.0f) < 0.5f ? "Prefabs/Em" : "Prefabs/Rawl");
 			if (whichRat == "Prefabs/Em") {
 				PhotonNetwork.playerName = "Em";
@@ -41,11 +36,12 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 			}
 		}
 		GameObject monster = PhotonNetwork.Instantiate(whichRat , spawnPoint.position, Quaternion.identity, 0);
-		Debug.Log ("I just spawned a network character");
 		PlayerMovement controller = monster.GetComponent<PlayerMovement> ();
 		controller.enabled = true;
-//		CameraController playerCam = monster.GetComponent<CameraController> ();
-//		playerCam.enabled = true;
+	}
+
+	public override void OnJoinedRoom(){
+		JoinRoomAndCreateCharacter ();
 	}
 
 	void OnPhotonRandomJoinFailed(){
@@ -60,8 +56,8 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 			roomOptions = new RoomOptions () { isVisible = true, maxPlayers = 2 };
 			PhotonNetwork.ConnectUsingSettings ("0.1");
 		} else {
-			single.SinglePlayer (spawnPoint);
-			Debug.Log ("I just spawned a single player character");
+			PhotonNetwork.offlineMode = true;
+			PhotonNetwork.JoinRandomRoom ();
 		}
 	}
 
