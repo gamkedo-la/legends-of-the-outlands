@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GameObject ratBody = GameObject.Find("CrudeRat");
-        ratBody.transform.position += new Vector3(0.6f, 0.0f, 0.0f);
+        ratBody.transform.position += transform.forward * 0.6f;
         ratBody.transform.Rotate(0.0f, 0.0f, -90.0f);
     }
 
@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
         climbing = false;
         GetComponent<Rigidbody>().useGravity = true;
         GameObject ratBody = GameObject.Find("CrudeRat");
-        ratBody.transform.position -= new Vector3(0.6f, 0.0f, 0.0f);
+        ratBody.transform.position -= transform.forward * 0.6f;
         ratBody.transform.Rotate(0.0f, 0.0f, +90.0f);
     }
 
