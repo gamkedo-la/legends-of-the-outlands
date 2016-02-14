@@ -8,19 +8,29 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	public bool singlePlayer = false;
 
 	string whichRat;
+	string AIRat;
 	RoomOptions roomOptions;
 
 	public override void OnJoinedLobby(){
 		PhotonNetwork.JoinRandomRoom ();
 	}
 
+	void CreateAIRat(Transform leader){
+		GameObject AIMonster = Instantiate(Resources.Load(AIRat), spawnPoint.position, Quaternion.identity) as GameObject;
+		Companion_AI AIController = AIMonster.GetComponent<Companion_AI> ();
+		AIController.enabled = true;
+		AIController.SetLeaderRat (leader);
+	}
+
 	void JoinRoomAndCreateCharacter(){
-		if (singlePlayer == false && PhotonNetwork.playerList.Length == 1) {
+		if (PhotonNetwork.playerList.Length == 1) {
 			whichRat = (Random.Range (0.0f, 1.0f) < 0.5f ? "Prefabs/Em" : "Prefabs/Rawl");
 			if (whichRat == "Prefabs/Em") {
 				PhotonNetwork.playerName = "Em";
+				AIRat = "Prefabs/Rawl";
 			} else {
 				PhotonNetwork.playerName = "Rawl";
+				AIRat = "Prefabs/Em";
 			}
 		} else {
 			for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {
@@ -38,6 +48,10 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 		GameObject monster = PhotonNetwork.Instantiate(whichRat , spawnPoint.position, Quaternion.identity, 0);
 		PlayerMovement controller = monster.GetComponent<PlayerMovement> ();
 		controller.enabled = true;
+
+		if (singlePlayer) {
+			CreateAIRat (monster.transform);
+		}
 	}
 
 	public override void OnJoinedRoom(){
