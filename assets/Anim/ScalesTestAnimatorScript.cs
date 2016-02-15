@@ -15,16 +15,22 @@ public class ScalesTestAnimatorScript : MonoBehaviour
 
 	void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             print("Plate 1 down");
             m_anim.SetTrigger("Plate 1 down");
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-            m_anim.SetTrigger("Plate 2 down");
-
         if (Input.GetKeyDown(KeyCode.L))
+        {
+            print("Plate 2 down");
+            m_anim.SetTrigger("Plate 2 down");
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            print("Plates level");
             m_anim.SetTrigger("Level");
+        }
     }
 }
