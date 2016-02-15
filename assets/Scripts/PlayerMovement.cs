@@ -16,12 +16,23 @@ public class PlayerMovement : MonoBehaviour{
     Rigidbody rb;
     float lastClickTime;
     CarryingController carryingController;
+	PhotonView myPhotonView;
 
     void Start(){
         rb = GetComponentInChildren<Rigidbody>();
         TP_Camera.UseExistingOrCreateNewMainCamera();
         carryingController = GetComponent<CarryingController>();
+		myPhotonView = GetComponent<PhotonView> ();
     }
+	[PunRPC]
+	void PlayChatter(){
+		SoundManager.instance.PlayNamedClipOn(chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);
+	}
+
+	[PunRPC]
+	void PlaySqueak(){
+		SoundManager.instance.PlayNamedClipOn(squeak, transform.position, gameObject.name, "squeak", 1.0f, transform);
+	}
 
     void Movement(){
         if (!climbing && !carryingController.sliding){
@@ -65,10 +76,13 @@ public class PlayerMovement : MonoBehaviour{
 
         if (Input.GetMouseButtonDown(1)){
             if (Time.time - lastClickTime < catchTime){
-                SoundManager.instance.PlayNamedClipOn(chatter, transform.position, gameObject.name, "chatter", 1.0f, transform);
+				myPhotonView.RPC ("PlayChatter", PhotonTargets.All);
+//				PlayChatter ();
+                
             }
             else{
-                SoundManager.instance.PlayNamedClipOn(squeak, transform.position, gameObject.name, "squeak", 1.0f, transform);
+				myPhotonView.RPC ("PlaySqueak", PhotonTargets.All);
+//				PlaySqueak ();
             }
             lastClickTime = Time.time;
         }
