@@ -84,15 +84,31 @@ public class CarryingController : MonoBehaviour{
     }
 
     //Drop carried object
-    void releaseObject(){
+    void releaseObject()
+    {
         carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
-        if (!sliding){
-            //carrying has only one child: the object being carried
-            carrying.GetChild(0).GetComponent<Collider>().enabled = true;
-            carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
-            carrying.GetChild(0).parent = carrying.parent;
+        RaycastHit hit;
+        if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit))
+        {
+            carrying.GetChild(0).GetComponent<CarryableObject>().dropObject(hit);
         }
-        else{
+        else
+        {
+            carrying.GetChild(0).GetComponent<CarryableObject>().dropObject();
+        }
+
+        if (!sliding)
+        {
+            //carrying has only one child: the object being carried
+            //            carrying.GetChild(0).parent = carrying.parent;
+            /*
+                        if (carrying.GetChild(0).name.Contains("pin")){
+                            carrying.GetComponent<Script>
+                        }
+            */
+        }
+        else
+        {
             carrying.GetComponent<Rigidbody>().isKinematic = false;
         }
         Destroy(carrying.gameObject); // accumulates new GO's without this
