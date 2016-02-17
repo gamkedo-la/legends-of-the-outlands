@@ -36,13 +36,20 @@ public class PlayerMovement : MonoBehaviour{
 
     void Movement(){
         if (!climbing && !carryingController.sliding){
+			Quaternion angleNow = transform.rotation;
+			Quaternion angleGoal = Quaternion.LookRotation(Quaternion.AngleAxis(TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
             if (Mathf.Abs(Input.GetAxis("Vertical")) > 0.5f){
-                Quaternion angleNow = transform.rotation;
-                Quaternion angleGoal = Quaternion.LookRotation(Quaternion.AngleAxis(TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
-                transform.rotation = Quaternion.Slerp(angleNow, angleGoal, Time.deltaTime * 5.0f);
+				transform.rotation = Quaternion.Slerp(angleNow, angleGoal, Time.deltaTime * 15.0f);
                 //				transform.LookAt (transform.position + Quaternion.AngleAxis (TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
             }
-            transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+			// condition added so rat will turn before walking, helps for the game's balancing narrow areas
+			float angDiff = Quaternion.Angle(angleGoal, angleNow);
+			Vector3 moveEffect = transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+			if(angDiff < 8.0f || Input.GetAxis("Vertical") < 0.0f) {
+				transform.position += moveEffect;
+			} else {
+				transform.position += moveEffect * 0.15f;
+			}
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
 
         }

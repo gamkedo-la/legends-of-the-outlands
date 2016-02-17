@@ -9,12 +9,16 @@ public class AnimateWhenRatHere : Photon.MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider other) {
-		photonView.RPC("WeighDown", PhotonTargets.All);
+		if(other.GetComponent<Collider>().name.StartsWith("Rawl")) {
+			photonView.RPC("WeighDown", PhotonTargets.All);
+		}
 		
 	}
 
 	void OnTriggerExit (Collider other) {
-		photonView.RPC("WeighUp", PhotonTargets.All);
+		if(other.GetComponent<Collider>().name.StartsWith("Rawl")) {
+			photonView.RPC("WeighUp", PhotonTargets.All);
+		}
 	}
 
 	[PunRPC]
