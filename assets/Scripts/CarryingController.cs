@@ -19,7 +19,7 @@ public class CarryingController : MonoBehaviour{
     // Update is called once per frame
     void LateUpdate(){
         //Pickup object
-        if (Input.GetMouseButtonDown(0) && carrying == null){
+		if (Input.GetButtonDown("Fire1") && carrying == null){
             RaycastHit hit;
 			LayerMask lmask = ~LayerMask.GetMask("Ignore Raycast");
 
@@ -30,7 +30,7 @@ public class CarryingController : MonoBehaviour{
                 slideObject(hit);
             }
         }
-        else if (Input.GetMouseButtonDown(0)){
+		else if (Input.GetButtonDown("Fire1")){
             releaseObject();
         }
 
