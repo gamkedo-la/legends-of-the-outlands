@@ -35,6 +35,24 @@ public class PlayerMovement : MonoBehaviour{
 	}
 
     void Movement(){
+		if(Input.GetKeyDown(KeyCode.Alpha1)) {
+			GameObject endGO = GameObject.Find("Debug Teleport 1");
+			if(endGO) {
+				transform.position = endGO.transform.position;
+			}
+		}
+
+		if(Input.GetKeyDown(KeyCode.Alpha2)) {
+			GameObject toastPath = GameObject.Find("ToastMaster");
+			if(toastPath) {
+				FlyingToastWaypoints ftw = toastPath.GetComponent<FlyingToastWaypoints>();
+				if(ftw && ftw.CarryMe(this)) {
+					this.enabled = false;
+					return;
+				}
+			}
+		}
+
         if (!climbing && !carryingController.sliding){
 			Quaternion angleNow = transform.rotation;
 			Quaternion angleGoal = Quaternion.LookRotation(Quaternion.AngleAxis(TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
