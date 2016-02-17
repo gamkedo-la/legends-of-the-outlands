@@ -16,12 +16,11 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	}
 
 	void CreateAIRat(Transform leader){
-		Vector3 AIoffset = Random.onUnitSphere;
-		AIoffset.y = 0.0f;
-		AIoffset.Normalize();
-		GameObject AIMonster = Instantiate(Resources.Load(AIRat), spawnPoint.position+AIoffset, Quaternion.identity) as GameObject;
+		GameObject AIMonster = Instantiate(Resources.Load(AIRat), spawnPoint.position, Quaternion.identity) as GameObject;
 		Companion_AI AIController = AIMonster.GetComponent<Companion_AI> ();
 		AIController.enabled = true;
+		CarryingController AICarry = AIMonster.GetComponent<CarryingController> ();
+		AICarry.enabled = false; // block it from getting player input messages
 		AIController.SetLeaderRat (leader);
 	}
 

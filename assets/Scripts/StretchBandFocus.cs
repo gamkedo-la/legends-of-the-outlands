@@ -12,6 +12,8 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 	public Transform bandLeft;
 	public Transform bandRight;
 
+	public GameObject showBridge;
+
 	Vector3 stretchFocus;
 
 	float stretchScaleBasis;
@@ -37,6 +39,10 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 	void playerDrop(){
 		Debug.Log("band released");
 		isStretching = false;
+	}
+
+	void OnEnable() {
+		showBridge.SetActive(false);
 	}
 
 	// Use this for initialization
@@ -79,6 +85,7 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 			if(bandWhole.activeSelf == false && Vector3.Distance(centerTgt, stretchFocus) < 0.1f) {
 				bandWhole.SetActive(true);
 				bandStretched.SetActive(false);
+				showBridge.SetActive(true);
 			}
 		}
 	}

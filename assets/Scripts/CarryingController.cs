@@ -21,8 +21,9 @@ public class CarryingController : MonoBehaviour{
         //Pickup object
         if (Input.GetMouseButtonDown(0) && carrying == null){
             RaycastHit hit;
+			LayerMask lmask = ~LayerMask.GetMask("Ignore Raycast");
 
-            if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance) && hit.transform.tag == "Carryable"){
+			if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance, lmask) && hit.transform.tag == "Carryable"){
                 pickupObject(hit);
             }
             else if (hit.transform != null && hit.transform.tag == "Slideable"){
