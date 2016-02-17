@@ -97,15 +97,11 @@ public class CarryingController : MonoBehaviour{
             carrying.GetChild(0).GetComponent<CarryableObject>().dropObject();
         }
 
-        if (!sliding)
+        if (!sliding && carrying.GetChild(0).GetComponent<CarryableObject>() == null)
         {
-            //carrying has only one child: the object being carried
-            //            carrying.GetChild(0).parent = carrying.parent;
-            /*
-                        if (carrying.GetChild(0).name.Contains("pin")){
-                            carrying.GetComponent<Script>
-                        }
-            */
+            carrying.GetChild(0).GetComponent<Collider>().enabled = true;
+            carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
+            carrying.GetChild(0).transform.parent = transform.parent.parent;
         }
         else
         {
