@@ -119,6 +119,7 @@ function BuildRope()
 	end.highTwistLimit.limit = highTwistLimit;
 	end.swing1Limit.limit	= swing1Limit;
 	target.parent = transform;
+
 	if(endRestrained)
 	{
 		end.GetComponent.<Rigidbody>().isKinematic = true;
@@ -135,10 +136,11 @@ function AddJointPhysics(n : int)
 {
 	joints[n] = new GameObject("Joint_" + n);
 	joints[n].transform.parent = transform;
+	joints[n].gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 	var rigid : Rigidbody = joints[n].AddComponent.<Rigidbody>();
 	if(!useMeshCollision) {
 		 var col : SphereCollider = joints[n].AddComponent.<SphereCollider>();
-		 col.layer = LayerMask.NametoLayer("TapeSelf");
+		 // col.layer = LayerMask.NametoLayer("TapeSelf");
 		 col.radius = ropeWidth;
 	}
 	var ph : CharacterJoint = joints[n].AddComponent.<CharacterJoint>();

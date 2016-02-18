@@ -16,21 +16,31 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 
 	Vector3 stretchFocus;
 
-	float stretchScaleBasis;
+	bool beenStretched = false;
+	public float stretchScaleBasis;
 	bool isStretching = false;
 
 	public void playerLifted() {
-		photonView.RPC("playerLift", PhotonTargets.All);
+		if(photonView == null) {
+			playerLift();
+		} else {
+			photonView.RPC("playerLift", PhotonTargets.All);
+		}
 	}
 
 	public void playerDropped() {
-		photonView.RPC("playerDrop", PhotonTargets.All);
+		if(photonView == null) {
+			playerDrop();
+		} else {
+			photonView.RPC("playerDrop", PhotonTargets.All);
+		}
 	}
 
 	[PunRPC]
 	void playerLift(){
 		Debug.Log("stretching band");
 		isStretching = true;
+		beenStretched = true;
 		bandWhole.SetActive(isStretching == false);
 		bandStretched.SetActive( isStretching );
 	}
@@ -86,6 +96,16 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 				bandWhole.SetActive(true);
 				bandStretched.SetActive(false);
 				showBridge.SetActive(true);
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),LayerMask.NameToLayer("Ignore Raycast"), false);
+
+				// remove launched spool
+				GameObject littleTape = GameObject.Find("TubeRenderer_Tape Measure Start-FromSpool");
+				if(littleTape) {
+					littleTape.SetActive(false);
+				}
+				gameObject.SetActive(false);
+			} else if(beenStretched) {
+				transform.position = stretchFocus;
 			}
 		}
 	}

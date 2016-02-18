@@ -10,6 +10,7 @@ public class CarryingController : MonoBehaviour{
     float minCarryingDistance; //TODO check to see if this is needed
     Vector3 moveableOffset;
     Transform storeOldParent;
+	public bool wasAlreadyKinematic;
 
     void Start(){
         BoxCollider collider = GetComponent<BoxCollider>();
@@ -53,6 +54,7 @@ public class CarryingController : MonoBehaviour{
         carrying = new GameObject().transform;
 
         hit.collider.enabled = false;
+		wasAlreadyKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
         hit.collider.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity
         carrying.parent = hit.transform.parent;
 
@@ -75,6 +77,7 @@ public class CarryingController : MonoBehaviour{
     void slideObject(RaycastHit hit){
         //Determine how far the object must be from the player not to clip the floor or push the player backwards
         carrying = hit.transform;
+		wasAlreadyKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
         carrying.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity
         Vector3 slidingExtents = carrying.GetComponent<Collider>().bounds.extents;
         moveableOffset = new Vector3(0, slidingExtents.y,
@@ -102,7 +105,7 @@ public class CarryingController : MonoBehaviour{
         else{
             if (!sliding){
                 carrying.GetChild(0).GetComponent<Collider>().enabled = true;
-                carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
+				carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = wasAlreadyKinematic; //Turn inertia and gravity back on
                 carrying.GetChild(0).transform.parent = carrying.GetChild(0).transform.parent.parent;
             }
             else{

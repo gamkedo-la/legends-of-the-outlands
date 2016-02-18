@@ -69,7 +69,7 @@ function LateUpdate () {
 		crossPoints = new Vector3[crossSegments];
 		var theta : float = 2.0*Mathf.PI/crossSegments;
 		for (var c:int=0;c<crossSegments;c++) {
-			crossPoints[c] = Vector3(Mathf.Cos(theta*c), Mathf.Sin(theta*c)*0.04f, 0); // crunched; cdeleon
+			crossPoints[c] = Vector3(Mathf.Cos(theta*c), Mathf.Sin(theta*c)*0.12f, 0); // crunched; cdeleon
 		}
 		lastCrossSegments = crossSegments;
 	}
@@ -126,6 +126,7 @@ function LateUpdate () {
 			gameObject.AddComponent(MeshCollider);
 			colliderExists = true;
 		}
+	gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 	GetComponent(MeshFilter).mesh = mesh;
 }
  
