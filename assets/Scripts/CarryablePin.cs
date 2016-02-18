@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CarryablePin : CarryableObject
 {
-    public float distance;
+    public float distance = 0.5f;
     public float stabDepth = 0.2f;
 
     public override void dropObject(RaycastHit hit)

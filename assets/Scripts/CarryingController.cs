@@ -88,24 +88,26 @@ public class CarryingController : MonoBehaviour{
     {
         carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
         RaycastHit hit;
-        if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit))
-        {
-            carrying.GetChild(0).GetComponent<CarryableObject>().dropObject(hit);
-        }
-        else
-        {
-            carrying.GetChild(0).GetComponent<CarryableObject>().dropObject();
-        }
 
-        if (!sliding && carrying.GetChild(0).GetComponent<CarryableObject>() == null)
-        {
-            carrying.GetChild(0).GetComponent<Collider>().enabled = true;
-            carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
-            carrying.GetChild(0).transform.parent = transform.parent.parent;
+        CarryableObject carryableObject = carrying.GetChild(0).GetComponent<CarryableObject>();
+
+        if (carryableObject != null){
+            if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit)){
+                carryableObject.dropObject(hit);
+            }
+            else{
+                carryableObject.dropObject();
+            }
         }
-        else
-        {
-            carrying.GetComponent<Rigidbody>().isKinematic = false;
+        else{
+            if (!sliding){
+                carrying.GetChild(0).GetComponent<Collider>().enabled = true;
+                carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = false; //Turn inertia and gravity back on
+                carrying.GetChild(0).transform.parent = carrying.GetChild(0).transform.parent.parent;
+            }
+            else{
+                carrying.GetComponent<Rigidbody>().isKinematic = false;
+            }
         }
         Destroy(carrying.gameObject); // accumulates new GO's without this
         carrying = null;

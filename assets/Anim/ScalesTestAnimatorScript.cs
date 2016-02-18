@@ -16,6 +16,7 @@ public class ScalesTestAnimatorScript : MonoBehaviour
 
 	void Update()
     {
+        /*
         if (weight1 > weight2 + 0.1f)
         {
             print("Plate 1 down");
@@ -33,5 +34,6 @@ public class ScalesTestAnimatorScript : MonoBehaviour
             print("Plates level");
             m_anim.SetTrigger("Level");
         }
+        */
     }
 }
