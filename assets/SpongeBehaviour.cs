@@ -6,10 +6,12 @@ public class SpongeBehaviour : MonoBehaviour {
     public float wet;
     float wetter = 0.01f;
     Renderer rend;
+    Rigidbody rigid;
 
 	// Use this for initialization
 	void Start () {
         rend = GetComponent<Renderer>();
+        rigid = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -19,6 +21,7 @@ public class SpongeBehaviour : MonoBehaviour {
         }
 
         rend.material.color = Color.Lerp(Color.yellow, Color.blue, wet);
+        rigid.mass = Mathf.Lerp(1.0f, 3.0f, wet);
 	}
 
     void OnCollisionEnter(Collision collision){
