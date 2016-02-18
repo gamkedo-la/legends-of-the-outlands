@@ -7,6 +7,8 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	public Transform spawnPoint;
 	public bool singlePlayer = false;
 
+	public RatID defaultPlayerRat = RatID.Rawl;
+
 	string whichRat;
 	string AIRat;
 	RoomOptions roomOptions;
@@ -26,13 +28,29 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 
 	void JoinRoomAndCreateCharacter(){
 		if (PhotonNetwork.playerList.Length == 1) {
-			whichRat = (Random.Range (0.0f, 1.0f) < 0.5f ? "Prefabs/Em" : "Prefabs/Rawl");
-			if (whichRat == "Prefabs/Em") {
+			string EmPrefab = "Prefabs/Em";
+			string RawlPrefab = "Prefabs/Rawl";
+				
+			switch(defaultPlayerRat) {
+			case RatID.Rawl:
+				whichRat = RawlPrefab;
+				break;
+			case RatID.Em:
+				whichRat = EmPrefab;
+				break;
+			case RatID.Either:
+			default:
+				whichRat = (Random.Range (0.0f, 1.0f) < 0.5f ? EmPrefab : RawlPrefab);
+				break;
+			}
+
+
+			if (whichRat == EmPrefab) {
 				PhotonNetwork.playerName = "Em";
-				AIRat = "Prefabs/Rawl";
+				AIRat = RawlPrefab;
 			} else {
 				PhotonNetwork.playerName = "Rawl";
-				AIRat = "Prefabs/Em";
+				AIRat = EmPrefab;
 			}
 		} else {
 			for (int i = 0; i < PhotonNetwork.playerList.Length; i++) {

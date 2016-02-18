@@ -41,15 +41,31 @@ public class PlayerMovement : MonoBehaviour{
 				transform.position = endGO.transform.position;
 			}
 		}
-
 		if(Input.GetKeyDown(KeyCode.Alpha2)) {
-			GameObject toastPath = GameObject.Find("ToastMaster");
-			if(toastPath) {
-				FlyingToastWaypoints ftw = toastPath.GetComponent<FlyingToastWaypoints>();
-				if(ftw && ftw.CarryMe(this)) {
-					this.enabled = false;
-					return;
+			GameObject endGO = GameObject.Find("Debug Teleport 2");
+			if(endGO) {
+				transform.position = endGO.transform.position;
+			}
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha3)) {
+			GameObject endGO = GameObject.Find("Debug Teleport 3");
+			if(endGO) {
+				GameObject sendGO = GameObject.Find("Em(Clone)");
+				if(sendGO) {
+					sendGO.transform.position = endGO.transform.position;
 				}
+			}
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha4)) {
+			GameObject endGO = GameObject.Find("Debug Teleport 4");
+			if(endGO) {
+				transform.position = endGO.transform.position;
+			}
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha5)) {
+			GameObject endGO = GameObject.Find("Debug Teleport 5");
+			if(endGO) {
+				transform.position = endGO.transform.position;
 			}
 		}
 

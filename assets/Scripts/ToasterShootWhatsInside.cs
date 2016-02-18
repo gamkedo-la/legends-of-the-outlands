@@ -28,6 +28,18 @@ public class ToasterShootWhatsInside : MonoBehaviour {
 			Animator toastAnim = toastBody.GetComponent<Animator>();
 			if(toastAnim.enabled == false) {
 				toastAnim.enabled = true;
+			} else if(EmDetector.EmOnToaster) {
+				GameObject toastPath = GameObject.Find("ToastMaster");
+				if(toastPath) {
+					FlyingToastWaypoints ftw = toastPath.GetComponent<FlyingToastWaypoints>();
+					GameObject sendGO = GameObject.Find("Em(Clone)");
+					if(ftw && sendGO) {
+						PlayerMovement pMoveScript = sendGO.GetComponent<PlayerMovement>();
+						if(pMoveScript && ftw.CarryMe(pMoveScript)) {
+							// pMoveScript.enabled = false;
+						}
+					}
+				}
 			}
 			isLaunchedYet = true;
 			isLoaded = false;
