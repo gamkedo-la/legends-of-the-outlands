@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class ScalesPlateWeightCounter : MonoBehaviour {
-    ScalesTestAnimatorScript scales;
+    ScalesAnimatorScript scales;
     public bool isPlate1;
 
     void Start()
     {
-        scales = transform.parent.GetComponent<ScalesTestAnimatorScript>();
+        scales = transform.parent.GetComponent<ScalesAnimatorScript>();
     }
 
     void OnCollisionEnter(Collision collision){
