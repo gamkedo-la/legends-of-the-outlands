@@ -6,10 +6,28 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Hook
+    100004: Paper_towel_wall-mount
+    100006: Spindle
+    100008: Hook_pivot
+    100010: Spindle_pivot
     400000: //RootNode
+    400002: Hook
+    400004: Paper_towel_wall-mount
+    400006: Spindle
+    400008: Hook_pivot
+    400010: Spindle_pivot
     2300000: //RootNode
+    2300002: Hook
+    2300004: Paper_towel_wall-mount
+    2300006: Spindle
     3300000: //RootNode
+    3300002: Hook
+    3300004: Paper_towel_wall-mount
+    3300006: Spindle
     4300000: Paper_towel_wall-mount
+    4300002: Hook
+    4300004: Spindle
     7400000: Default Take
     9500000: //RootNode
   materials:
