@@ -80,6 +80,22 @@ ModelImporter:
     100144: sink_area_004
     100146: Vert_000
     100148: Vert_002
+    100150: BezierCircle_001
+    100152: Pipes
+    100154: Pipes_001
+    100156: Pipes_002
+    100158: Pipes_003
+    100160: Pipes_004
+    100162: Pipes_005
+    100164: Pipes_006
+    100166: Pipes_007
+    100168: Pipes_008
+    100170: Pipes_009
+    100172: Pipes_010
+    100174: Pipes_011
+    100176: Pipes_012
+    100178: Pipes_013
+    100180: Pipes_014
     400000: //RootNode
     400002: cabinetface
     400004: cabinetface_001
@@ -155,6 +171,22 @@ ModelImporter:
     400144: sink_area_004
     400146: Vert_000
     400148: Vert_002
+    400150: BezierCircle_001
+    400152: Pipes
+    400154: Pipes_001
+    400156: Pipes_002
+    400158: Pipes_003
+    400160: Pipes_004
+    400162: Pipes_005
+    400164: Pipes_006
+    400166: Pipes_007
+    400168: Pipes_008
+    400170: Pipes_009
+    400172: Pipes_010
+    400174: Pipes_011
+    400176: Pipes_012
+    400178: Pipes_013
+    400180: Pipes_014
     2300000: //RootNode
     2300002: cabinetface
     2300004: cabinetface_001
@@ -230,6 +262,22 @@ ModelImporter:
     2300144: sink_area_004
     2300146: Vert_000
     2300148: Vert_002
+    2300150: BezierCircle_001
+    2300152: Pipes
+    2300154: Pipes_001
+    2300156: Pipes_002
+    2300158: Pipes_003
+    2300160: Pipes_004
+    2300162: Pipes_005
+    2300164: Pipes_006
+    2300166: Pipes_007
+    2300168: Pipes_008
+    2300170: Pipes_009
+    2300172: Pipes_010
+    2300174: Pipes_011
+    2300176: Pipes_012
+    2300178: Pipes_013
+    2300180: Pipes_014
     3300000: //RootNode
     3300002: cabinetface
     3300004: cabinetface_001
@@ -305,6 +353,22 @@ ModelImporter:
     3300144: sink_area_004
     3300146: Vert_000
     3300148: Vert_002
+    3300150: BezierCircle_001
+    3300152: Pipes
+    3300154: Pipes_001
+    3300156: Pipes_002
+    3300158: Pipes_003
+    3300160: Pipes_004
+    3300162: Pipes_005
+    3300164: Pipes_006
+    3300166: Pipes_007
+    3300168: Pipes_008
+    3300170: Pipes_009
+    3300172: Pipes_010
+    3300174: Pipes_011
+    3300176: Pipes_012
+    3300178: Pipes_013
+    3300180: Pipes_014
     4300000: Plane
     4300002: Vert_000
     4300004: Cylinder
@@ -379,6 +443,22 @@ ModelImporter:
     4300142: sink_area
     4300144: cabinetface
     4300146: sink
+    4300148: Pipes_012
+    4300150: Pipes_013
+    4300152: Pipes_011
+    4300154: Pipes_010
+    4300156: BezierCircle_001
+    4300158: Pipes_009
+    4300160: Pipes_008
+    4300162: Pipes_007
+    4300164: Pipes_006
+    4300166: Pipes_005
+    4300168: Pipes_004
+    4300170: Pipes_003
+    4300172: Pipes_002
+    4300174: Pipes_001
+    4300176: Pipes
+    4300178: Pipes_014
     7400000: Default Take
     9500000: //RootNode
   materials:
