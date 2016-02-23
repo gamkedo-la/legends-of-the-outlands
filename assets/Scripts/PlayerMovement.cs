@@ -68,7 +68,12 @@ public class PlayerMovement : MonoBehaviour{
 				transform.position = endGO.transform.position;
 			}
 		}
-
+		if(Input.GetKeyDown(KeyCode.Alpha6)) {
+			GameObject endGO = GameObject.Find("Debug Teleport 6");
+			if (endGO) {
+				transform.position = endGO.transform.position;
+			}
+		}
         if (!climbing && !carryingController.sliding){
 			Quaternion angleNow = transform.rotation;
 			Quaternion angleGoal = Quaternion.LookRotation(Quaternion.AngleAxis(TP_Camera.Instance.mouseX, Vector3.up) * Vector3.forward);
