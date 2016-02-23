@@ -6,7 +6,7 @@ public class Companion_AI : MonoBehaviour {
 
 	public float moveSpeed = 3.0f;
 	public float rotationSpeed = 3.0f;
-	public float minDistance = 30.0f;
+	public float minDistance = 4.0f;
 
 	Transform leader;
 	float distToTarget;
