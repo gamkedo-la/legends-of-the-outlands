@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour{
     public float jumpPower = 20.0f;
     public bool grounded = true;
     public bool climbing = false;
-	public bool oldTransformMove = true;
 
     bool hasJumped = false;
     Rigidbody rb;
@@ -84,22 +83,13 @@ public class PlayerMovement : MonoBehaviour{
             //}
 			// condition added so rat will turn before walking, helps for the game's balancing narrow areas
 			float angDiff = Quaternion.Angle(angleGoal, angleNow);
-			Vector3 moveEffect;
-
-			if(oldTransformMove) {
-				moveEffect = transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
-				if(angDiff < 15.0f || Input.GetAxis("Vertical") < 0.0f) {
-					transform.position += moveEffect;
-				} else {
-					transform.position += moveEffect * 0.45f;
-				}
-				transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
+			Vector3 moveEffect = transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+			if(angDiff < 15.0f || Input.GetAxis("Vertical") < 0.0f) {
+				transform.position += moveEffect;
 			} else {
-				moveEffect = transform.forward * (movementSpeed * Input.GetAxis("Vertical")) + transform.right * (movementSpeed * Input.GetAxis("Horizontal"));
-				float wasYVforGrav = rb.velocity.y;
-				moveEffect.y = wasYVforGrav;
-				rb.velocity = moveEffect;
+				transform.position += moveEffect * 0.45f;
 			}
+            transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
 
         }
         else if (climbing){
@@ -119,14 +109,6 @@ public class PlayerMovement : MonoBehaviour{
         if (Input.GetKeyDown(KeyCode.R)){
             transform.rotation = Quaternion.identity;
         }
-		if (Input.GetKeyDown(KeyCode.J)){
-			oldTransformMove = false;
-			Debug.Log("oldTransformMove:" + oldTransformMove);
-		}
-		if (Input.GetKeyDown(KeyCode.K)){
-			oldTransformMove = true;
-			Debug.Log("oldTransformMove:" + oldTransformMove);
-		}
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded == true && !carryingController.sliding){
             hasJumped = true;

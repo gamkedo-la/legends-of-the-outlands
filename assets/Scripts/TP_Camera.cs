@@ -9,14 +9,14 @@ public class TP_Camera : MonoBehaviour {
 	public float Distance = 5.0f;
 	public float DistanceMin = 0.55f;
 	public float DistanceMax = 0.55f;
-	public float DistanceSmooth = 0.1f;
+	public float DistanceSmooth = 0.05f;
 	public float X_MouseSensitivity = 2.5f;
 	public float Y_MouseSensitivity = 0.5f;
 	public float MouseWheelSensitivity = 5.0f;
 	public float Y_MinLimit = -15.0f;
 	public float Y_MaxLimit = 20.0f;
-	public float X_Smooth = 0.2f;
-	public float Y_Smooth = 0.2f;
+	public float X_Smooth = 0.05f;
+	public float Y_Smooth = 0.1f;
 
 	public float mouseX = 0.0f;
 	float mouseY = 0.0f;
@@ -86,8 +86,6 @@ public class TP_Camera : MonoBehaviour {
 
 		transform.position = position;
 
-		/*transform.rotation = Quaternion.Slerp( transform.rotation,
-			Quaternion.LookRotation( TargetLookAt.position - transform.position), 10.0f * Time.deltaTime);*/
 		transform.LookAt (TargetLookAt.position);
 	}
 
