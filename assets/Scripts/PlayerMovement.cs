@@ -95,16 +95,10 @@ public class PlayerMovement : MonoBehaviour{
 				}
 				transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
 			} else {
-				moveEffect = transform.forward * (movementSpeed * Input.GetAxis("Vertical"));
+				moveEffect = transform.forward * (movementSpeed * Input.GetAxis("Vertical")) + transform.right * (movementSpeed * Input.GetAxis("Horizontal"));
 				float wasYVforGrav = rb.velocity.y;
-				if(angDiff < 15.0f || Input.GetAxis("Vertical") < 0.0f) {
-					;
-				} else {
-					moveEffect *= 0.45f;
-				}
 				moveEffect.y = wasYVforGrav;
-				// transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
-				rb.velocity = moveEffect + transform.right * (movementSpeed * Input.GetAxis("Horizontal"));
+				rb.velocity = moveEffect;
 			}
 
         }
