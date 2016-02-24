@@ -3,7 +3,7 @@ guid: f703685d60db745139f1e9c7577ad9f3
 timeCreated: 1455495972
 licenseType: Free
 ModelImporter:
-  serializedVersion: 18
+  serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
     100002: cabinetface
@@ -98,6 +98,7 @@ ModelImporter:
     100180: Pipes_014
     100182: hole
     100184: Right_window
+    100186: Window_latch
     400000: //RootNode
     400002: cabinetface
     400004: cabinetface_001
@@ -191,6 +192,7 @@ ModelImporter:
     400180: Pipes_014
     400182: hole
     400184: Right_window
+    400186: Window_latch
     2300000: //RootNode
     2300002: cabinetface
     2300004: cabinetface_001
@@ -284,6 +286,7 @@ ModelImporter:
     2300180: Pipes_014
     2300182: hole
     2300184: Right_window
+    2300186: Window_latch
     3300000: //RootNode
     3300002: cabinetface
     3300004: cabinetface_001
@@ -377,6 +380,7 @@ ModelImporter:
     3300180: Pipes_014
     3300182: hole
     3300184: Right_window
+    3300186: Window_latch
     4300000: Plane
     4300002: Vert_000
     4300004: Cylinder
@@ -469,6 +473,7 @@ ModelImporter:
     4300178: Pipes_014
     4300180: hole
     4300182: Right_window
+    4300184: Window_latch
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -478,6 +483,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleRotations: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -485,9 +491,9 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations: []
@@ -511,20 +517,19 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0
