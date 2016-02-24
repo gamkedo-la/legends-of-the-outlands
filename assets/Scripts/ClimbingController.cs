@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ClimbingController : MonoBehaviour {
 
-    private PlayerMovement movementScript;
+    private PlayerMovement movementScript = new PlayerMovement();
     public float maxStartClimbingAngle = 60;
     float climbingDistanceOffset = -0.35f;
     float topVerticalAdjustment = 0.3f, topHorizontalAdjustment = 1.0f;
