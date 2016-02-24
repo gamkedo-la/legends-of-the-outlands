@@ -99,6 +99,9 @@ ModelImporter:
     100182: hole
     100184: Right_window
     100186: Window_latch
+    100188: Left_window_pane
+    100190: Middle_window_pane
+    100192: Right_window_pane
     400000: //RootNode
     400002: cabinetface
     400004: cabinetface_001
@@ -193,6 +196,9 @@ ModelImporter:
     400182: hole
     400184: Right_window
     400186: Window_latch
+    400188: Left_window_pane
+    400190: Middle_window_pane
+    400192: Right_window_pane
     2300000: //RootNode
     2300002: cabinetface
     2300004: cabinetface_001
@@ -287,6 +293,9 @@ ModelImporter:
     2300182: hole
     2300184: Right_window
     2300186: Window_latch
+    2300188: Left_window_pane
+    2300190: Middle_window_pane
+    2300192: Right_window_pane
     3300000: //RootNode
     3300002: cabinetface
     3300004: cabinetface_001
@@ -381,6 +390,9 @@ ModelImporter:
     3300182: hole
     3300184: Right_window
     3300186: Window_latch
+    3300188: Left_window_pane
+    3300190: Middle_window_pane
+    3300192: Right_window_pane
     4300000: Plane
     4300002: Vert_000
     4300004: Cylinder
@@ -474,6 +486,9 @@ ModelImporter:
     4300180: hole
     4300182: Right_window
     4300184: Window_latch
+    4300186: Middle_window_pane
+    4300188: Left_window_pane
+    4300190: Right_window_pane
     7400000: Default Take
     9500000: //RootNode
   materials:
