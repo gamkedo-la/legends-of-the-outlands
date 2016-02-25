@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using Photon;
 
@@ -6,6 +7,7 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 
 	public Transform spawnPoint;
 	public bool singlePlayer = false;
+	public Toggle networkCheckbox;
 
 	public RatID defaultPlayerRat = RatID.Rawl;
 
@@ -13,8 +15,14 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	string AIRat;
 	RoomOptions roomOptions;
 
+	public static RandomMatchmaker instance;
+
 	public override void OnJoinedLobby(){
 		PhotonNetwork.JoinRandomRoom ();
+	}
+
+	public void ToggleSPBasedOnCheckbox() {
+		singlePlayer = (networkCheckbox.isOn == false);
 	}
 
 	void CreateAIRat(Transform leader){
@@ -86,6 +94,9 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		instance = this;
+
+		ToggleSPBasedOnCheckbox();
 		if (singlePlayer == false) {
 			roomOptions = new RoomOptions () { isVisible = true, maxPlayers = 2 };
 			PhotonNetwork.ConnectUsingSettings ("0.1");

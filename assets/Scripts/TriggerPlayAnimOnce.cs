@@ -6,11 +6,17 @@ public class TriggerPlayAnimOnce : MonoBehaviour {
 
 	bool playedYet = false;
 
-	void OnTriggerEnter (Collider whoEnters) {
-		if(playedYet == false && whoEnters.tag == "Player") {
+	public void FireAnim() {
+		if(playedYet == false) {
 			playedYet = true;
 			Animator playWhichAnim = playAnimOn.GetComponent<Animator>();
 			playWhichAnim.enabled = true;
+		}
+	}
+
+	void OnTriggerEnter (Collider whoEnters) {
+		if(whoEnters.tag == "Player") {
+			FireAnim();
 		}
 	}
 }

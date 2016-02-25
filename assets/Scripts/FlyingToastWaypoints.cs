@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class FlyingToastWaypoints : MonoBehaviour {
 	public List<Vector3> waypointFlown;
 
+	public TriggerPlayAnimOnce activateLatchIfSP;
+
 	float RAT_HIGHER_THAN_BREAD_CENTER = 0.5f;
 
 	List<float> timeStamps;
@@ -43,6 +45,9 @@ public class FlyingToastWaypoints : MonoBehaviour {
 					wpNum = SKIP_FIRST_X_WAYPOINTS; // reload in case they want to do it again
 					flyingNow = null;
 					flownStarted = false;
+					if(RandomMatchmaker.instance && activateLatchIfSP) {
+						activateLatchIfSP.FireAnim();
+					}
 				}
 			}
 		}

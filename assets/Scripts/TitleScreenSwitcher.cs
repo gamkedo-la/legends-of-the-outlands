@@ -17,7 +17,7 @@ public class TitleScreenSwitcher : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)){
 			Application.Quit();
 		}
-		if (Input.GetKeyDown(KeyCode.Space)){
+		if (Input.GetKeyDown(KeyCode.Space) && Camera.main.transform.parent != null){
 			GameStart();
 			titleScreenCanvas.SetActive(false);
 		}
