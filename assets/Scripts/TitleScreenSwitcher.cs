@@ -4,6 +4,7 @@ using System.Collections;
 public class TitleScreenSwitcher : MonoBehaviour {
 	public Transform spawnPointForCameraWarp;
 	public RandomMatchmaker gameStarter;
+	public GameObject titleScreenCanvas;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,10 @@ public class TitleScreenSwitcher : MonoBehaviour {
 	public void Update() {
 		if (Input.GetKeyDown(KeyCode.Escape)){
 			Application.Quit();
+		}
+		if (Input.GetKeyDown(KeyCode.Space)){
+			GameStart();
+			titleScreenCanvas.SetActive(false);
 		}
 	}
 	
