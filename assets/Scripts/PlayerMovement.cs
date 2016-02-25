@@ -114,7 +114,11 @@ public class PlayerMovement : MonoBehaviour{
             transform.position += transform.right * (Time.deltaTime * movementSpeed * Input.GetAxis("Horizontal"));
         }
         else{
-            transform.position += transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+			Vector3 moveEffect = transform.forward * (Time.deltaTime * movementSpeed * Input.GetAxis("Vertical"));
+			if(carryingController.sliding) {
+				moveEffect *= 10.7f;
+			}
+			rb.velocity = moveEffect;
         }
     }
 
