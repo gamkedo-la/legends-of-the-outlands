@@ -2,11 +2,13 @@
 using System.Collections;
 
 public class SongSwitcher : MonoBehaviour {
+	public AudioClip titleSong;
+
 	public AudioClip tunnelSong;
 	public AudioClip transitionSong;
 	public AudioClip kitchenSong;
 
-	enum SongMode {TUNNEL,TRANSITON, KITCHEN, NONE_YET};
+	enum SongMode {TUNNEL,TRANSITON, KITCHEN, TITLE, NONE_YET};
 	SongMode songNow = SongMode.NONE_YET;
 
 	AudioSource jukeBox;
@@ -20,14 +22,22 @@ public class SongSwitcher : MonoBehaviour {
 		jukeBox = GetComponent<AudioSource>();
 		jukeBoxFader = transform.GetChild(0).GetComponent<AudioSource>();
 
-		songNow = SongMode.TUNNEL;
-		jukeBox.clip = tunnelSong;
+		songNow = SongMode.TITLE;
+		jukeBox.clip = titleSong;
 		jukeBox.Play();
-		RenderSettings.fog = true;
+		RenderSettings.fog = false;
 
 		// jukeBoxFader.clip = transitionSong;
 		// jukeBoxFader.Play();
 	}
+
+	public void StartGameMusic() {
+		songNow = SongMode.TUNNEL;
+		jukeBox.clip = tunnelSong;
+		jukeBox.Play();
+		RenderSettings.fog = true;
+	}
+
 
 	IEnumerator SongTransition() {
 		Debug.Log("transitioning song");
@@ -64,6 +74,9 @@ public class SongSwitcher : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(songNow == SongMode.TITLE) {
+			return;
+		}
 		if(transform.position.y > groundPlaneForY.position.y) {
 			CheckAndPlay(SongMode.KITCHEN, kitchenSong);
 		} else {
