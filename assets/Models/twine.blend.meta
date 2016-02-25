@@ -139,6 +139,9 @@ ModelImporter:
     2300074: Cylinder_007_MeshPart3
     2300076: Cylinder_007_MeshPart4
     2300078: Cylinder_007_MeshPart5
+    2300080: Cylinder_001
+    2300082: Cylinder_002
+    2300084: Cylinder_005
     3300000: Circle
     3300002: Curve
     3300004: Curve_001
@@ -179,6 +182,9 @@ ModelImporter:
     3300074: Cylinder_007_MeshPart3
     3300076: Cylinder_007_MeshPart4
     3300078: Cylinder_007_MeshPart5
+    3300080: Cylinder_001
+    3300082: Cylinder_002
+    3300084: Cylinder_005
     4300000: Curve_001
     4300002: Cylinder_007_MeshPart0
     4300004: Cylinder_007_MeshPart1
@@ -219,6 +225,9 @@ ModelImporter:
     4300074: Cylinder_001_MeshPart5
     4300076: Circle
     4300078: Cylinder
+    4300080: Cylinder_005
+    4300082: Cylinder_002
+    4300084: Cylinder_001
     7400000: Default Take
     9500000: //RootNode
   materials:
