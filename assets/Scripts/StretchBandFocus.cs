@@ -15,6 +15,8 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 	public GameObject showBridge;
 
 	Vector3 stretchFocus;
+	float maxDist = 1.5f;
+	Vector3 homePos;
 
 	bool beenStretched = false;
 	public float stretchScaleBasis;
@@ -62,8 +64,8 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 		stretchFocus = transform.position;
 		isStretching = false;
 		bandWhole.SetActive(isStretching == false);
+		homePos = transform.position;
 		bandStretched.SetActive( isStretching );
-		stretchScaleBasis = 7.9f - 5.421f; // length at default scale, found by moving between those coords on axis
 	}
 	
 	// Update is called once per frame
@@ -81,11 +83,16 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 
 		bandRight.position = (stretchFocus + anchorPtRight.position) * 0.5f;
 		bandRight.LookAt(stretchFocus);
-		bandRight.Rotate(transform.up, 180.0f, Space.Self);
+		bandRight.Rotate(Vector3.up, 180.0f, Space.Self);
 
 		stretchVec = Vector3.one * 0.01f;
 		stretchVec.z *= (anchorPtRight.position - stretchFocus).magnitude / stretchScaleBasis;
 		bandRight.transform.localScale = stretchVec;
+
+		if(Vector3.Distance(transform.position, homePos) > maxDist) {
+			isStretching = false;
+		}
+
 	}
 
 	void FixedUpdate() {
