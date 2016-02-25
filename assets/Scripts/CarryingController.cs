@@ -15,7 +15,7 @@ public class CarryingController : MonoBehaviour{
 
     void Start(){
         BoxCollider collider = GetComponent<BoxCollider>();
-        minCarryingDistance = collider.bounds.extents.z + collider.center.z;
+        minCarryingDistance = collider.bounds.extents.z + collider.center.z + collider.bounds.extents.x;
         if(name == "Em"){
             emAbility = GetComponent<EmAbilityBehavior>();
         }
@@ -28,14 +28,14 @@ public class CarryingController : MonoBehaviour{
             RaycastHit hit;
 			LayerMask lmask = ~LayerMask.GetMask("Ignore Raycast");
 
-			if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance, lmask) && hit.transform.tag == "Carryable"){
+            if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance, lmask) && hit.transform.tag == "Carryable"){
                 pickupObject(hit);
             }
             else if (hit.transform != null && hit.transform.tag == "Slideable"){
                 slideObject(hit);
             }
         }
-		else if (Input.GetButtonDown("Fire1")){
+        else if (Input.GetButtonDown("Fire1")){
             releaseObject();
         }
 
@@ -56,10 +56,6 @@ public class CarryingController : MonoBehaviour{
     void pickupObject(RaycastHit hit){
         Transform carryingPoint = hit.transform.Find("CarryingPoint");
         carrying = new GameObject().transform;
-
-        if(emAbility != null){
-            emAbility.changeStatus(false);
-        }
 
         hit.collider.enabled = false;
 		wasObjectKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
@@ -91,8 +87,9 @@ public class CarryingController : MonoBehaviour{
         }
 		wasObjectKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
         carrying.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity
+
         Vector3 slidingExtents = carrying.GetComponent<Collider>().bounds.extents;
-        moveableOffset = new Vector3(0, slidingExtents.y,
+        moveableOffset = new Vector3(0, slidingExtents.y - 0.1f,
             Mathf.Min(Mathf.Sqrt(slidingExtents.x * slidingExtents.x + slidingExtents.y * slidingExtents.y) + minCarryingDistance,
                 Vector3.Distance(transform.position, new Vector3(carrying.position.x, transform.position.y, carrying.position.z))));
         sliding = true;
@@ -126,7 +123,7 @@ public class CarryingController : MonoBehaviour{
         }
         else
         {
-//            carrying.GetComponent<Rigidbody>().isKinematic = true;
+            carrying.GetComponent<Rigidbody>().isKinematic = wasObjectKinematic;
         }
         carrying = null;
         sliding = false;
