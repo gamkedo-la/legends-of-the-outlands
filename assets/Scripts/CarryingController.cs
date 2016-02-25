@@ -72,7 +72,7 @@ public class CarryingController : MonoBehaviour{
             carrying.position = hit.transform.position;
             carrying.rotation = hit.transform.rotation;
         }
-//        hit.collider.SendMessage("playerLifted", SendMessageOptions.DontRequireReceiver);
+        hit.collider.SendMessage("playerLifted", SendMessageOptions.DontRequireReceiver);
         hit.transform.parent = carrying.transform;
         moveableOffset = carryingOffset;
     }
@@ -97,7 +97,9 @@ public class CarryingController : MonoBehaviour{
 
     //Drop carried object
     void releaseObject(){
-        //carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
+		if(carrying.GetChild(0)) {
+			carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
+		}
         RaycastHit hit;
 
         if (!sliding){

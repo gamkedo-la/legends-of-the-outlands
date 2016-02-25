@@ -21,6 +21,7 @@ public class StretchBandFocus : Photon.MonoBehaviour {
 	bool isStretching = false;
 
 	public void playerLifted() {
+		Debug.Log("playerLifted - Photon null? " + (photonView == null));
 		if(photonView == null) {
 			playerLift();
 		} else {

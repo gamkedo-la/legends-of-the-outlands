@@ -58,10 +58,10 @@ public class ClimbingController : MonoBehaviour {
 
     void Update(){
         //Cache inputs
-        if (Input.GetMouseButtonDown(0)){
+		if (Input.GetButtonDown("Fire1")){
             lmbDown = true;
         }
-        else if(Input.GetMouseButtonUp(0)){
+		else if(Input.GetButtonUp("Fire1")){
             lmbDown = false;
         }
 
@@ -78,7 +78,7 @@ public class ClimbingController : MonoBehaviour {
                 movementScript.stopClimbing();
             }
             //Stop climbing on mouse release
-            else if (Input.GetMouseButtonUp(0)){
+			else if (Input.GetButtonUp("Fire1")){
                 movementScript.stopClimbing();
             }
             //Stop climbing if the player jumps

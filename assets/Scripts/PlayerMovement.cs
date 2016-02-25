@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour{
     public bool climbing = false;
 	public bool oldTransformMove = true;
 
+	bool cursorShouldBeLocked = true;
+
     bool hasJumped = false;
     Rigidbody rb;
     float lastClickTime;
@@ -118,20 +120,21 @@ public class PlayerMovement : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
+		if (cursorShouldBeLocked)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
+
         if (Input.GetKeyDown(KeyCode.Escape)){
+			cursorShouldBeLocked = false; // in case in editor
             Application.Quit();
         }
-        if (Input.GetKeyDown(KeyCode.R)){
-            transform.rotation = Quaternion.identity;
-        }
-		if (Input.GetKeyDown(KeyCode.J)){
-			oldTransformMove = false;
-			Debug.Log("oldTransformMove:" + oldTransformMove);
-		}
-		if (Input.GetKeyDown(KeyCode.K)){
-			oldTransformMove = true;
-			Debug.Log("oldTransformMove:" + oldTransformMove);
-		}
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded == true && !carryingController.sliding){
             hasJumped = true;

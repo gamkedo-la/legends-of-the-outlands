@@ -11,6 +11,12 @@ public class TitleScreenSwitcher : MonoBehaviour {
 		Camera.main.transform.localPosition = Vector3.zero;
 		Camera.main.transform.localRotation = Quaternion.identity;
 	}
+
+	public void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			Application.Quit();
+		}
+	}
 	
 	public void GameStart () {
 		Camera.main.transform.parent = null; // release it
