@@ -8,7 +8,6 @@ public class SongSwitcher : MonoBehaviour {
 
 	enum SongMode {TUNNEL,TRANSITON, KITCHEN, NONE_YET};
 	SongMode songNow = SongMode.NONE_YET;
-	SongMode songNext = SongMode.NONE_YET;
 
 	AudioSource jukeBox;
 	AudioSource jukeBoxFader;
@@ -24,12 +23,14 @@ public class SongSwitcher : MonoBehaviour {
 		songNow = SongMode.TUNNEL;
 		jukeBox.clip = tunnelSong;
 		jukeBox.Play();
+		RenderSettings.fog = true;
 
 		// jukeBoxFader.clip = transitionSong;
 		// jukeBoxFader.Play();
 	}
 
 	IEnumerator SongTransition() {
+		Debug.Log("transitioning song");
 		blockNewEnum = true;
 		jukeBox.clip = transitionSong;
 		jukeBox.Play();
@@ -53,6 +54,7 @@ public class SongSwitcher : MonoBehaviour {
 
 	void CheckAndPlay(SongMode songEnum, AudioClip songFile) {
 		if(songNow != songEnum) {
+			RenderSettings.fog = (songEnum == SongMode.TUNNEL);
 			songNow = songEnum;
 			if(blockNewEnum == false) {
 				StartCoroutine(SongTransition());

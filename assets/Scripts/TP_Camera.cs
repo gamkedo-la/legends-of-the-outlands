@@ -75,7 +75,14 @@ public class TP_Camera : MonoBehaviour {
 	Vector3 CalculatePosition(float rotationX, float rotationY, float distance){
 		Vector3 direction = new Vector3 (0, 0, -distance);
 		Quaternion rotation = Quaternion.Euler (rotationX, rotationY, 0);
-		return TargetLookAt.position + rotation * direction;
+		RaycastHit rhInfo;
+		if(Physics.Raycast(TargetLookAt.position, rotation * direction, out rhInfo, distance)) {
+			float newDist = Vector3.Distance(rhInfo.point, TargetLookAt.position);
+			direction = direction.normalized * newDist * 0.6f;
+			return TargetLookAt.position + rotation * direction;
+		} else {
+			return TargetLookAt.position + rotation * direction;
+		}
 	}
 
 	void UpdatePosition(){
