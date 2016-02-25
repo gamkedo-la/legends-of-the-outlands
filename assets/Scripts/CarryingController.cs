@@ -10,11 +10,15 @@ public class CarryingController : MonoBehaviour{
     float minCarryingDistance; //TODO check to see if this is needed
     Vector3 moveableOffset;
     Transform storeOldParent;
-	public bool wasAlreadyKinematic;
+	public bool wasObjectKinematic;
+    EmAbilityBehavior emAbility;
 
     void Start(){
         BoxCollider collider = GetComponent<BoxCollider>();
         minCarryingDistance = collider.bounds.extents.z + collider.center.z;
+        if(name == "Em"){
+            emAbility = GetComponent<EmAbilityBehavior>();
+        }
     }
 
     // Update is called once per frame
@@ -53,8 +57,12 @@ public class CarryingController : MonoBehaviour{
         Transform carryingPoint = hit.transform.Find("CarryingPoint");
         carrying = new GameObject().transform;
 
+        if(emAbility != null){
+            emAbility.changeStatus(false);
+        }
+
         hit.collider.enabled = false;
-		wasAlreadyKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
+		wasObjectKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
         hit.collider.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity
         carrying.parent = hit.transform.parent;
 
@@ -68,7 +76,7 @@ public class CarryingController : MonoBehaviour{
             carrying.position = hit.transform.position;
             carrying.rotation = hit.transform.rotation;
         }
-        hit.collider.SendMessage("playerLifted", SendMessageOptions.DontRequireReceiver);
+//        hit.collider.SendMessage("playerLifted", SendMessageOptions.DontRequireReceiver);
         hit.transform.parent = carrying.transform;
         moveableOffset = carryingOffset;
     }
@@ -77,7 +85,11 @@ public class CarryingController : MonoBehaviour{
     void slideObject(RaycastHit hit){
         //Determine how far the object must be from the player not to clip the floor or push the player backwards
         carrying = hit.transform;
-		wasAlreadyKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
+
+        if(emAbility != null){
+            emAbility.changeStatus(false);
+        }
+		wasObjectKinematic = hit.collider.GetComponent<Rigidbody>().isKinematic;
         carrying.GetComponent<Rigidbody>().isKinematic = true; //Carried object no longer affected by inertia or gravity
         Vector3 slidingExtents = carrying.GetComponent<Collider>().bounds.extents;
         moveableOffset = new Vector3(0, slidingExtents.y,
@@ -87,33 +99,40 @@ public class CarryingController : MonoBehaviour{
     }
 
     //Drop carried object
-    void releaseObject()
-    {
-        carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
+    void releaseObject(){
+        //carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
         RaycastHit hit;
 
-        CarryableObject carryableObject = carrying.GetChild(0).GetComponent<CarryableObject>();
+        if (!sliding){
+            //Check to see if carried object has a special script attatched for dropping it
+            CarryableObject carryableObject = carrying.GetChild(0).GetComponent<CarryableObject>();
 
-        if (carryableObject != null){
-            if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit)){
-                carryableObject.dropObject(hit);
+            //if it does, then execute it
+            if (carryableObject != null){
+                if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit)){
+                    carryableObject.dropObject(hit);
+                }
+                else{
+                    carryableObject.dropObject();
+                }
             }
+            //otherwise just drop it
             else{
-                carryableObject.dropObject();
-            }
-        }
-        else{
-            if (!sliding){
                 carrying.GetChild(0).GetComponent<Collider>().enabled = true;
-				carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = wasAlreadyKinematic; //Turn inertia and gravity back on
+                carrying.GetChild(0).GetComponent<Rigidbody>().isKinematic = wasObjectKinematic; //Turn inertia and gravity back on
                 carrying.GetChild(0).transform.parent = carrying.GetChild(0).transform.parent.parent;
             }
-            else{
-                carrying.GetComponent<Rigidbody>().isKinematic = false;
-            }
+            Destroy(carrying.gameObject); // accumulates new GO's without this
         }
-        Destroy(carrying.gameObject); // accumulates new GO's without this
+        else
+        {
+//            carrying.GetComponent<Rigidbody>().isKinematic = true;
+        }
         carrying = null;
         sliding = false;
+
+        if(emAbility != null){
+            emAbility.changeStatus(true);
+        }
     }
 }

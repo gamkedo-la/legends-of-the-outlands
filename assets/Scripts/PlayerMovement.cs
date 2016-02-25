@@ -18,12 +18,17 @@ public class PlayerMovement : MonoBehaviour{
     float lastClickTime;
     CarryingController carryingController;
 	PhotonView myPhotonView;
+    EmAbilityBehavior emAbility;
 
     void Start(){
         rb = GetComponentInChildren<Rigidbody>();
         TP_Camera.UseExistingOrCreateNewMainCamera();
         carryingController = GetComponent<CarryingController>();
 		myPhotonView = GetComponent<PhotonView> ();
+        if(name == "Em")
+        {
+            emAbility = GetComponent<EmAbilityBehavior>();
+        }
     }
 	[PunRPC]
 	void PlayChatter(){
@@ -164,16 +169,16 @@ public class PlayerMovement : MonoBehaviour{
         climbing = true;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GameObject ratBody = GameObject.Find("CrudeRat");
-        ratBody.transform.position += transform.forward * 0.6f;
-        ratBody.transform.Rotate(0.0f, 0.0f, -90.0f);
+        GameObject ratBody = GameObject.Find("Rat");
+        ratBody.transform.position += transform.forward * 0.25f;
+        ratBody.transform.Rotate(0.0f, -90.0f, 0.0f);
     }
 
     public void stopClimbing(){
         climbing = false;
         GetComponent<Rigidbody>().useGravity = true;
-        GameObject ratBody = GameObject.Find("CrudeRat");
-        ratBody.transform.position -= transform.forward * 0.6f;
-        ratBody.transform.Rotate(0.0f, 0.0f, +90.0f);
+        GameObject ratBody = GameObject.Find("Rat");
+        ratBody.transform.position -= transform.forward * 0.25f;
+        ratBody.transform.Rotate(0.0f, +90.0f, 0.0f);
     }
 }
