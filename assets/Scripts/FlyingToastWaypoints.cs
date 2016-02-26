@@ -45,7 +45,7 @@ public class FlyingToastWaypoints : MonoBehaviour {
 					wpNum = SKIP_FIRST_X_WAYPOINTS; // reload in case they want to do it again
 					flyingNow = null;
 					flownStarted = false;
-					if(RandomMatchmaker.instance && activateLatchIfSP) {
+					if(RandomMatchmaker.instance && RandomMatchmaker.instance.singlePlayer && activateLatchIfSP) {
 						activateLatchIfSP.FireAnim();
 					}
 				}

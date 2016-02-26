@@ -30,13 +30,10 @@ public class ToasterShootWhatsInside : MonoBehaviour {
 				toastAnim.enabled = true;
 
 				if(RandomMatchmaker.instance.singlePlayer) {
-					Debug.Log("A");
 					GameObject endGO = GameObject.Find("Debug Teleport 3");
 					if(endGO) {
-						Debug.Log("B");
 						GameObject sendGO = GameObject.Find("Em(Clone)");
 						if(sendGO) {
-							Debug.Log("C");
 							sendGO.transform.position = endGO.transform.position;
 						}
 					}
