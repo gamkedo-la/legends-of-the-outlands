@@ -176,16 +176,16 @@ public class PlayerMovement : MonoBehaviour{
         climbing = true;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GameObject ratBody = GameObject.Find("Rat");
+        GameObject ratBody = GameObject.Find("Ratv2");
         ratBody.transform.position += transform.forward * 0.25f;
-        ratBody.transform.Rotate(0.0f, -90.0f, 0.0f);
+        ratBody.transform.Rotate(0.0f, 0.0f, +90.0f);
     }
 
     public void stopClimbing(){
         climbing = false;
         GetComponent<Rigidbody>().useGravity = true;
-        GameObject ratBody = GameObject.Find("Rat");
+        GameObject ratBody = GameObject.Find("Ratv2");
         ratBody.transform.position -= transform.forward * 0.25f;
-        ratBody.transform.Rotate(0.0f, +90.0f, 0.0f);
+        ratBody.transform.Rotate(0.0f, 0.0f, -90.0f);
     }
 }
