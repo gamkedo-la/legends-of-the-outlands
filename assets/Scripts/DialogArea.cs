@@ -23,10 +23,15 @@ public class DialogArea : MonoBehaviour {
 	public SpeakMoment[] linesHere;
 	int spokenLine = NOT_YET_SPOKEN;
 
+	public string showHelpAfter = "";
+
 	void AdvanceSpokenLine() {
 		spokenLine++;
 		if(spokenLine >= linesHere.Length) {
 			Debug.Log("Dialog done!");
+			if (showHelpAfter.Length > 1) {
+				HelpMessage.instance.setMessage (showHelpAfter);
+			}
 			spokenLine = ALREADY_SPOKEN; // block from repeat
 		} else {
 			DoCurrentDialogLine();

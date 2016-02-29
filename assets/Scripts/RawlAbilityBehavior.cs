@@ -3,31 +3,37 @@ using System.Collections;
 
 public class RawlAbilityBehavior : MonoBehaviour {
 
-	private Material[] startMat;
-	public GameObject RawlAbilityObject;
-	public float changeInterval = 0.33F;
-	public Renderer rend;
+	private Material startMat;
+	private Renderer rend;
+	private Material highlightMat;
+	private bool powerShowing = false;
 
 	void Start () {
 		rend = GetComponent<Renderer> ();
-		rend.enabled = true;
-		RawlAbilityObject = GameObject.FindWithTag("RawlAbilityObject");
+		startMat = rend.material;
+		highlightMat = Resources.Load ("HighlightMat") as Material;
 	}
+
+	bool isLocalPlayerRawl (){
+		GameObject Rawl = (GameObject) GameObject.Find ("Rawl(Clone)");
+		if (Rawl == null) {
+			return false;
+		}
+
+		PlayerMovement PMScript = Rawl.GetComponent<PlayerMovement> ();
+		return PMScript.enabled;
+	}
+		
 
 	void Update () {
-		if (startMat.Length == 0)
-			return;
-		int index = Mathf.FloorToInt (Time.time / changeInterval);
-
-		index = index % startMat.Length;
-
-		if(Input.GetKeyDown(KeyCode.Q))
+		if(Input.GetKeyDown(KeyCode.Q) && isLocalPlayerRawl())
 		{
-			Material startMat = Resources.Load("HighlightMat",typeof(Material)) as Material;
+			powerShowing = !powerShowing;
+			if (powerShowing) {
+				rend.material = highlightMat;
+			} else {
+				rend.material = startMat;
+			}
 		}
-		if(Input.GetKeyUp(KeyCode.Q))
-		{
-			rend.startMat = startMat [index];	
 	}
-}
 }
