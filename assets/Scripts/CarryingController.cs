@@ -90,9 +90,8 @@ public class CarryingController : MonoBehaviour{
         //Determine how far the object must be from the player not to clip the floor or push the player backwards
         carrying = hit.transform;
 
-        if(emAbility != null){
-            emAbility.changeStatus(false);
-        }
+        setEmAbility(false);
+
 		rb = hit.collider.GetComponent<Rigidbody>();
 		wasObjectKinematic = rb.isKinematic;
 		rb.isKinematic = true; //Carried object no longer affected by inertia or gravity
@@ -109,7 +108,6 @@ public class CarryingController : MonoBehaviour{
 		if(carrying.childCount > 0) {
 			carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
 		}
-        RaycastHit hit;
 
         if (!sliding){
             //Check to see if carried object has a special script attatched for dropping it
@@ -117,12 +115,9 @@ public class CarryingController : MonoBehaviour{
 
             //if it does, then execute it
             if (carryableObject != null){
-                if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit)){
-                    carryableObject.dropObject(hit);
-                }
-                else{
-                    carryableObject.dropObject();
-                }
+                RaycastHit hit;
+                Physics.Raycast(new Ray(transform.position, transform.forward), out hit);
+                carryableObject.dropObject(hit);
             }
             //otherwise just drop it
             else{
@@ -132,15 +127,20 @@ public class CarryingController : MonoBehaviour{
             }
             Destroy(carrying.gameObject); // accumulates new GO's without this
         }
-        else
-        {
+        else{
             carrying.GetComponent<Rigidbody>().isKinematic = wasObjectKinematic;
         }
         carrying = null;
         sliding = false;
 
-        if(emAbility != null){
-            emAbility.changeStatus(true);
+        setEmAbility(true);
+    }
+
+    void setEmAbility(bool abilityState)
+    {
+        if (emAbility != null)
+        {
+            emAbility.changeStatus(abilityState);
         }
     }
 }
