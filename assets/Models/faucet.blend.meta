@@ -16,12 +16,15 @@ ModelImporter:
     2300000: Faucet_MeshPart0
     2300002: Faucet_MeshPart1
     2300004: Faucet_MeshPart2
+    2300006: //RootNode
     3300000: Faucet_MeshPart0
     3300002: Faucet_MeshPart1
     3300004: Faucet_MeshPart2
+    3300006: //RootNode
     4300000: Faucet_MeshPart0
     4300002: Faucet_MeshPart1
     4300004: Faucet_MeshPart2
+    4300006: Faucet
     7400000: Default Take
     9500000: //RootNode
   materials:

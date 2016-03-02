@@ -25,7 +25,7 @@ public class SongSwitcher : MonoBehaviour {
 		songNow = SongMode.TITLE;
 		jukeBox.clip = titleSong;
 		jukeBox.Play();
-		RenderSettings.fog = false;
+		// RenderSettings.fog = false;
 
 		// jukeBoxFader.clip = transitionSong;
 		// jukeBoxFader.Play();
@@ -35,7 +35,7 @@ public class SongSwitcher : MonoBehaviour {
 		songNow = SongMode.TUNNEL;
 		jukeBox.clip = tunnelSong;
 		jukeBox.Play();
-		RenderSettings.fog = true;
+		// RenderSettings.fog = true;
 	}
 
 
@@ -64,7 +64,7 @@ public class SongSwitcher : MonoBehaviour {
 
 	void CheckAndPlay(SongMode songEnum, AudioClip songFile) {
 		if(songNow != songEnum) {
-			RenderSettings.fog = (songEnum == SongMode.TUNNEL);
+			// RenderSettings.fog = (songEnum == SongMode.TUNNEL);
 			songNow = songEnum;
 			if(blockNewEnum == false) {
 				StartCoroutine(SongTransition());
