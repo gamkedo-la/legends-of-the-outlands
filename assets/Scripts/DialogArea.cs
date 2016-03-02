@@ -15,7 +15,7 @@ public class SpeakMoment
 }
 
 
-public class DialogArea : MonoBehaviour {
+public class DialogArea : Photon.MonoBehaviour {
 	const int NOT_YET_SPOKEN = -1;
 	const int ALREADY_SPOKEN = -2;
 
@@ -77,4 +77,24 @@ public class DialogArea : MonoBehaviour {
 			DoCurrentDialogLine();
 		}
 	}
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting)
+		{
+			// We own this player: send the others our data
+			stream.SendNext(spokenLine);
+		}
+		else
+		{
+			// Network player, receive data
+			bool wasntSpeaking = (spokenLine == NOT_YET_SPOKEN);
+			spokenLine = (int) stream.ReceiveNext();
+			bool isSpeakingNow = (spokenLine != NOT_YET_SPOKEN);
+			if(wasntSpeaking && isSpeakingNow) {
+				DoCurrentDialogLine();
+			}
+		}
+	}
+
 }

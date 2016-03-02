@@ -188,4 +188,20 @@ public class PlayerMovement : MonoBehaviour{
         ratBody.transform.position -= transform.forward * 0.25f;
         ratBody.transform.Rotate(0.0f, 0.0f, -90.0f);
     }
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting)
+		{
+			// We own this player: send the others our data
+			stream.SendNext(transform.position);
+			stream.SendNext(transform.rotation);
+		}
+		else
+		{
+			// Network player, receive data
+			this.transform.position = (Vector3) stream.ReceiveNext();
+			this.transform.rotation = (Quaternion) stream.ReceiveNext();
+		}
+	}
 }

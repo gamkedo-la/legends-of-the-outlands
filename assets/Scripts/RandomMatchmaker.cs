@@ -76,6 +76,8 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 		GameObject monster = PhotonNetwork.Instantiate(whichRat , spawnPoint.position, Quaternion.identity, 0);
 		PlayerMovement controller = monster.GetComponent<PlayerMovement> ();
 		controller.enabled = true;
+		CarryingController carryController = monster.GetComponent<CarryingController> ();
+		carryController.enabled = true;
 
 		if (singlePlayer) {
 			CreateAIRat (monster.transform);

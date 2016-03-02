@@ -39,13 +39,13 @@ public class SongSwitcher : MonoBehaviour {
 	}
 
 
-	IEnumerator SongTransition() {
-		Debug.Log("transitioning song");
+	IEnumerator  SongTransition() {
+		//Debug.Log("transitioning song");
 		blockNewEnum = true;
 		jukeBox.clip = transitionSong;
 		jukeBox.Play();
 		yield return new WaitForSeconds(transitionSong.length);
-		Debug.Log("MUSIC TRANSITION DONE");
+		// Debug.Log("MUSIC TRANSITION DONE");
 		switch( songNow ) {
 		case SongMode.TUNNEL:
 			jukeBox.clip = tunnelSong;

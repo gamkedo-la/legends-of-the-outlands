@@ -30,4 +30,17 @@ public class AnimateWhenRatHere : Photon.MonoBehaviour {
 	void WeighUp () {
 		someAnim.SetBool("WeighedDown", false);
 	}
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting)
+		{
+			// We own this player: send the others our data
+			stream.SendNext( someAnim.GetBool("WeighedDown") );
+		}
+		else
+		{
+			someAnim.SetBool("WeighedDown",  (bool) stream.ReceiveNext() );
+		}
+	}
 }

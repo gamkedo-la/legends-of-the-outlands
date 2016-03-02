@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CarryingController : MonoBehaviour{
+public class CarryingController : Photon.MonoBehaviour{
     public float maxGrabDistance = 1.5f;
     public Vector3 carryingOffset = new Vector3(0, 0, 1.0f);
+
+	int heldByPlayerID = -1;
 
     public bool sliding = false;
     Transform carrying = null;
@@ -13,8 +15,11 @@ public class CarryingController : MonoBehaviour{
 	public bool wasObjectKinematic;
     EmAbilityBehavior emAbility;
 	Rigidbody rb;
+	LayerMask lmask;
 
     void Start(){
+		lmask = ~LayerMask.GetMask("Ignore Raycast","DialogTrigger");
+
         BoxCollider collider = GetComponent<BoxCollider>();
 		minCarryingDistance = collider.bounds.extents.z + collider.center.z + collider.bounds.extents.x;
         if(name == "Em"){
@@ -27,25 +32,45 @@ public class CarryingController : MonoBehaviour{
         //Pickup object
 		if (Input.GetButtonDown("Fire1") && carrying == null){
             RaycastHit hit;
-			LayerMask lmask = ~LayerMask.GetMask("Ignore Raycast");
 
             if (Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance, lmask) && hit.transform.tag == "Carryable"){
-                pickupObject(hit);
+				if(photonView == null) {
+					pickupObject(PhotonNetwork.player.ID);
+				} else {
+					photonView.RPC("pickupObject", PhotonTargets.All, PhotonNetwork.player.ID);
+				}
+				// pickupObject(hit, PhotonNetwork.player.ID);
             }
             else if (hit.transform != null && hit.transform.tag == "Slideable"){
-                slideObject(hit);
+				if(photonView == null) {
+					slideObject(PhotonNetwork.player.ID);
+				} else {
+					photonView.RPC("slideObject", PhotonTargets.All, PhotonNetwork.player.ID);
+				}
+				// slideObject(hit, PhotonNetwork.player.ID);
             }
         }
         else if (Input.GetButtonDown("Fire1")){
-            releaseObject();
+			if(photonView == null) {
+				releaseObject();
+			} else {
+				photonView.RPC("releaseObject", PhotonTargets.All);
+			}
+            // releaseObject();
         }
 
         //If an object is being carried/slid, update the position of the object
-        if (carrying != null){
-            moveObject();
+		if (carrying != null /* && heldByPlayerID == PhotonNetwork.player.ID */){
+			if(photonView == null) {
+				moveObject();
+			} else {
+				photonView.RPC("moveObject", PhotonTargets.All);
+			}
+            // moveObject();
         }
     }
 
+	[PunRPC]
     private void moveObject(){
 		Vector3 goalPt = transform.position
 			+ transform.forward * moveableOffset.z
@@ -55,20 +80,37 @@ public class CarryingController : MonoBehaviour{
 		if(sliding) {
 			goalPt.y = carrying.position.y;
 		}
-		carrying.position = goalPt;
+		if(carrying != null) {
+			carrying.position = goalPt;
+		} else {
+			releaseObject();
+			return;
+		}
 
 		if (!sliding) { carrying.rotation = transform.rotation; } //Only rotate if carrying, not sliding
     }
 
-    void pickupObject(RaycastHit hit){
+	[PunRPC]
+	void pickupObject(int grabbedByPlayerID){
+		RaycastHit hit;
+		Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance, lmask);
+
+		heldByPlayerID = grabbedByPlayerID;
+
         Transform carryingPoint = hit.transform.Find("CarryingPoint");
-        carrying = new GameObject().transform;
+		GameObject carryGO = PhotonNetwork.Instantiate("CarryTransform", carryingPoint.position, carryingPoint.rotation, 0);
+		carrying = /*new GameObject()*/ carryGO.transform;
 
         hit.collider.enabled = false;
 		rb = hit.collider.GetComponentInChildren<Rigidbody>();
 		wasObjectKinematic = rb.isKinematic;
 		rb.isKinematic = true; //Carried object no longer affected by inertia or gravity
         carrying.parent = hit.transform.parent;
+
+		PhotonView pvScript = hit.transform.GetComponent<PhotonView>();
+		if(pvScript) {
+			pvScript.RequestOwnership();
+		}
 
         if (carryingPoint != null){
             carrying.position = carryingPoint.position;
@@ -86,7 +128,13 @@ public class CarryingController : MonoBehaviour{
     }
 
     //Marks an object as sliding, does not actually move the object
-    void slideObject(RaycastHit hit){
+	[PunRPC]
+	void slideObject(int grabbedByPlayerID){
+		RaycastHit hit;
+		Physics.Raycast(new Ray(transform.position, transform.forward), out hit, maxGrabDistance, lmask);
+
+		heldByPlayerID = grabbedByPlayerID;
+
         //Determine how far the object must be from the player not to clip the floor or push the player backwards
         carrying = hit.transform;
 
@@ -104,7 +152,17 @@ public class CarryingController : MonoBehaviour{
     }
 
     //Drop carried object
+	[PunRPC]
     void releaseObject(){
+		/* if(heldByPlayerID != PhotonNetwork.player.ID) {
+			return;
+		}*/
+		if(carrying == null) {
+			return;
+		}
+
+		heldByPlayerID = -1;
+
 		if(carrying.childCount > 0) {
 			carrying.GetChild(0).SendMessage("playerDropped", SendMessageOptions.DontRequireReceiver);
 		}
@@ -143,4 +201,24 @@ public class CarryingController : MonoBehaviour{
             emAbility.changeStatus(abilityState);
         }
     }
+
+	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting)
+		{
+			// We own this player: send the others our data
+			if(carrying != null) {
+				stream.SendNext(carrying.position);
+				stream.SendNext(carrying.rotation);
+			}
+		}
+		else
+		{
+			// Network player, receive data
+			if(carrying != null) {
+				carrying.transform.position = (Vector3)stream.ReceiveNext();
+				carrying.transform.rotation = (Quaternion)stream.ReceiveNext();
+			}
+		}
+	}
 }
