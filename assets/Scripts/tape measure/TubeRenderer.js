@@ -53,9 +53,9 @@ function Start() {
 	gameObject.AddComponent(MeshFilter);
 	var mr : MeshRenderer = gameObject.AddComponent(MeshRenderer);
 	mr.material = material;
-	if(material) {
+	/* if(material) {
 			if(material.GetTexture("_BumpMap")) usingBumpmap = true;
-	}
+	}*/
 }
  
 function LateUpdate () {

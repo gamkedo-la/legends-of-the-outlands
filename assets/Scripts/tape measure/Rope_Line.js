@@ -90,8 +90,8 @@ function BuildRope()
 	segments = Vector3.Distance(transform.position,target.position)*resolution;
 	if(material) {
 		 material.SetTextureScale("_MainTex",Vector2(1,segments+2));
-		 if(material.GetTexture("_BumpMap"))
-			material.SetTextureScale("_BumpMap",Vector2(1,segments+2));
+		 /* if(material.GetTexture("_BumpMap"))
+			material.SetTextureScale("_BumpMap",Vector2(1,segments+2)); */
 	}
 	line.vertices = new TubeVertex[segments];
 	line.crossSegments = radialSegments;
