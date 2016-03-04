@@ -6,7 +6,7 @@ public class BandSwitch : Photon.MonoBehaviour {
 	public GameObject removeThisOnEntry;
 	public GameObject appearThisOnEntry;
 	public GameObject makeCarryable;
-	bool bandAttachedYet = false;
+	public static bool bandAttachedYet = false;
 
 	void Start () {
 		removeThisOnEntry.SetActive(true);
@@ -21,10 +21,12 @@ public class BandSwitch : Photon.MonoBehaviour {
 		bandAttachedYet = true;
 		removeThisOnEntry.SetActive(false);
 		appearThisOnEntry.SetActive(true);
-		makeCarryable.tag = "Carryable";
-		makeCarryable.layer = LayerMask.NameToLayer("Carryable");
-		Rigidbody rb = makeCarryable.GetComponent<Rigidbody>();
-		rb.isKinematic = false;
+		if(PumpkinPinDetector.isPinOnPumpking) {
+			makeCarryable.tag = "Carryable";
+			makeCarryable.layer = LayerMask.NameToLayer("Carryable");
+			Rigidbody rb = makeCarryable.GetComponent<Rigidbody>();
+			rb.isKinematic = true;
+		}
 		this.enabled = false;
 	}
 	
