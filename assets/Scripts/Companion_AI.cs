@@ -16,6 +16,12 @@ public class Companion_AI : MonoBehaviour {
 		leader = transform;
 	}
 
+	void TeleportToLeader(){
+		Debug.Log ("In TTL");
+//		Vector3 tempPos = leader.position -= transform.forward * minDistance;
+		transform.position = leader.position + transform.up * 3.0f;;
+	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -24,6 +30,9 @@ public class Companion_AI : MonoBehaviour {
 		distToTarget = Vector3.Distance (transform.position, leader.position);
 		if (distToTarget < minDistance) {
 			moveTowards = false;
+		} else if (distToTarget > 8.0f) {
+			Debug.Log ("Distance to target is greater than 8.0f");
+			TeleportToLeader ();
 		} else {
 			moveTowards = true;
 		}
