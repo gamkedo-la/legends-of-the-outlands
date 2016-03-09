@@ -42,10 +42,12 @@ public class FlyingToastWaypoints : MonoBehaviour {
 				if(wpNum >= waypointFlown.Count) {
 					// flyingNow.GetComponent<Collider>().enabled = true;
 					// flyingNow.enabled = true;
+					Debug.Log("Launch complete");
 					wpNum = SKIP_FIRST_X_WAYPOINTS; // reload in case they want to do it again
 					flyingNow = null;
 					flownStarted = false;
 					if(RandomMatchmaker.instance && RandomMatchmaker.instance.singlePlayer && activateLatchIfSP) {
+						Debug.Log("Calling FireAnim");
 						activateLatchIfSP.FireAnim();
 					}
 				}

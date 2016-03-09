@@ -22,21 +22,21 @@ public class EmAbilityBehavior : MonoBehaviour {
 
         Transform emAbilityObjectsChild = emAbilityObjects.transform.GetChild(0);
         if(emAbilityObjectsChild.name == "EmAbilityZones"){
-            Debug.Log("init zones");
+            // Debug.Log("init zones");
             findEmZones(emAbilityObjectsChild);
         }
         else{
-            Debug.Log("init targets");
+            // Debug.Log("init targets");
             findEmTargets(emAbilityObjectsChild);
         }
 
         emAbilityObjectsChild = emAbilityObjects.transform.GetChild(1);
         if (emAbilityObjectsChild.name == "EmAbilityZones"){
-            Debug.Log("init zones");
+			// Debug.Log("init zones");
             findEmZones(emAbilityObjectsChild);
         }
         else{
-            Debug.Log("init targets");
+			// Debug.Log("init targets");
             findEmTargets(emAbilityObjectsChild);
         }
     }
@@ -79,7 +79,7 @@ public class EmAbilityBehavior : MonoBehaviour {
         for(int i = 0; i < emAbilityZones.Length; i++){
             if(collider == emAbilityZones[i]){
                 inZone[i] = true;
-                Debug.Log("Entered zone " + i);
+				// Debug.Log("Entered zone " + i);
             }
         }
     }
@@ -88,14 +88,14 @@ public class EmAbilityBehavior : MonoBehaviour {
         for (int i = 0; i < emAbilityZones.Length; i++){
             if (collider == emAbilityZones[i]){
                 inZone[i] = false;
-                Debug.Log("Exited zone " + i);
+                // Debug.Log("Exited zone " + i);
             }
         }
     }
 
     void findEmZones(Transform emZones){
         emAbilityZones = new Collider[emZones.childCount];
-        Debug.Log("Zones: " + emZones.childCount);
+        // Debug.Log("Zones: " + emZones.childCount);
         inZone = new bool[emZones.childCount];
 
         for(int i = 0; i < emZones.childCount; i++){
@@ -106,7 +106,7 @@ public class EmAbilityBehavior : MonoBehaviour {
 
     void findEmTargets(Transform emTargets){
         emAbilityTargets = new Transform[emTargets.childCount];
-        Debug.Log("Tars: " + emTargets.childCount);
+        // Debug.Log("Tars: " + emTargets.childCount);
         for(int i = 0; i < emTargets.childCount; i++){
             emAbilityTargets[i] = emTargets.GetChild(i);
         }

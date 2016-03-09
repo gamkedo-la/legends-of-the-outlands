@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TriggerPlayAnimOnce : Photon.MonoBehaviour {
 	public GameObject playAnimOn;
+	public Collider colliderToVanish;
 
 	bool playedYet = false;
 
@@ -12,6 +13,7 @@ public class TriggerPlayAnimOnce : Photon.MonoBehaviour {
 			playedYet = true;
 			Animator playWhichAnim = playAnimOn.GetComponent<Animator>();
 			playWhichAnim.enabled = true;
+			colliderToVanish.enabled = false;
 		}
 	}
 
