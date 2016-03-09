@@ -9,12 +9,13 @@ public class SpongeBehaviour : MonoBehaviour {
     float wetter = 0.01f;*/
     Renderer rend;
     Rigidbody rigid;
+	private Material SpongeWetMat;
 
 	// Use this for initialization
 	void Start () {
         rend = GetComponent<Renderer>();
         rigid = GetComponent<Rigidbody>();
-		rend.material.color = Color.yellow;
+		//rend.material.color = Color.yellow;
 	}
 	
 	// Update is called once per frame
@@ -30,7 +31,9 @@ public class SpongeBehaviour : MonoBehaviour {
     void OnCollisionEnter(Collision collision){
 		if(gotWet == false && collision.gameObject.name.Contains("sinkwater")) {
 			gotWet = true;
-			rend.material.color = Color.blue;
+			SpongeWetMat = Resources.Load ("SpongeWetMat") as Material;
+			rend.material = SpongeWetMat; 
+			//rend.material.color = Color.blue;
 			rigid.mass = 3.0f;
 			// transform.localScale *= 1.3f;
 		}
