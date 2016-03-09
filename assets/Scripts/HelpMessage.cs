@@ -17,7 +17,7 @@ public class HelpMessage : MonoBehaviour {
 		StartCoroutine (temporaryMessage ());
 	}
 	IEnumerator temporaryMessage (){
-		yield return new WaitForSeconds (5.0f);
+		yield return new WaitForSeconds (10.0f);
 		helpText.text = "";
 	}
 }

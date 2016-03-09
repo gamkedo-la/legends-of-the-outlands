@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour{
     public bool grounded = true;
     public bool climbing = false;
 	public bool oldTransformMove = true;
+	int consecFramesWithoutVertChange = 0;
 
 	bool cursorShouldBeLocked = true;
 
@@ -142,14 +143,9 @@ public class PlayerMovement : MonoBehaviour{
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded == true && !carryingController.sliding){
             hasJumped = true;
+			consecFramesWithoutVertChange = 0;
         }
-
-        if (hasJumped){
-            rb.AddForce(transform.up * jumpPower);
-            grounded = false;
-            hasJumped = false;
-        }
-
+			
         if (Input.GetMouseButtonDown(1)){
             if (Time.time - lastClickTime < catchTime){
 				myPhotonView.RPC ("PlayChatter", PhotonTargets.All);
@@ -167,8 +163,24 @@ public class PlayerMovement : MonoBehaviour{
 
     void FixedUpdate(){
         // moved to fixedupdate so after force affects velocity
-        if (grounded == false && Mathf.Abs(rb.velocity.y) < 0.01f){
-            grounded = true;
+
+		if (hasJumped){
+			rb.AddForce(transform.up * jumpPower);
+			grounded = false;
+			hasJumped = false;
+		}
+
+		if (grounded == false){
+			if(Mathf.Abs(rb.velocity.y) < 0.001f) {
+				consecFramesWithoutVertChange++;
+			} else {
+				// Debug.Log(rb.velocity.y);
+				consecFramesWithoutVertChange = 0;
+			}
+
+			if(consecFramesWithoutVertChange > 5) {
+				grounded = true;
+			}
         }
     }
 

@@ -18,8 +18,17 @@ public class ScalesAnimatorScript : MonoBehaviour
         m_anim = GetComponent<Animator>();
     }
 
+	public void WeightDelta(float weightAmt, int forSide) {
+		if(forSide==1) {
+			weight1 += weightAmt;
+		} else {
+			weight2 += weightAmt;
+		}
+		UpdatePos();
+	}
 
-    void Update()
+
+    void UpdatePos()
     {
         if (weight1 > weight2 + 0.1f && currentState != ScaleState.Plate1Down)
         {
@@ -45,13 +54,14 @@ public class ScalesAnimatorScript : MonoBehaviour
 
     public void changeWeight(bool isPlate1, float weight)
     {
-        if (isPlate1)
+		Debug.Log("ignoring changeWeight, WeightDelta triggers account for stacked objects");
+        /*if (isPlate1)
         {
             weight1 += weight;
         }
         else
         {
             weight2 += weight;
-        }
+        }*/
     }
 }

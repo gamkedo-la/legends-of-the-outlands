@@ -109,6 +109,11 @@ public class RandomMatchmaker : Photon.PunBehaviour {
 	}
 
 	void OnGUI(){
-		GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+		if(PhotonNetwork.connectionStateDetailed != PeerState.Joined) {
+			GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+		} else if(RandomMatchmaker.instance && RandomMatchmaker.instance.singlePlayer == false &&
+			PhotonNetwork.playerList.Length==1) {
+			GUILayout.Label("Connected but waiting for another player to start online");
+		}
 	}
 }

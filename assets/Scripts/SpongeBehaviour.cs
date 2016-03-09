@@ -32,7 +32,7 @@ public class SpongeBehaviour : MonoBehaviour {
 			gotWet = true;
 			rend.material.color = Color.blue;
 			rigid.mass = 3.0f;
-			transform.localScale *= 1.3f;
+			// transform.localScale *= 1.3f;
 		}
         /*if (collision.gameObject.name.Contains("sink")){
             inWater = true;

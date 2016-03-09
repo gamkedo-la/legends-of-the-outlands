@@ -18,7 +18,7 @@ public class CarryingController : Photon.MonoBehaviour{
 	LayerMask lmask;
 
     void Start(){
-		lmask = ~LayerMask.GetMask("Ignore Raycast","DialogTrigger");
+		lmask = ~LayerMask.GetMask("Ignore Raycast","DialogTrigger", "NoPlayersAllowedButCarraybleOK");
 
         BoxCollider collider = GetComponent<BoxCollider>();
 		minCarryingDistance = collider.bounds.extents.z + collider.center.z + collider.bounds.extents.x;
