@@ -13,6 +13,11 @@ public class EmAbilityBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if(RandomMatchmaker.instance && RandomMatchmaker.instance.singlePlayer) {
+			enabled = false;
+			return;
+		}
+
         GameObject abilityCamObject = new GameObject();
         abilityCamObject.AddComponent<Camera>();
         emAbilityCam = abilityCamObject.GetComponent<Camera>();
@@ -43,6 +48,10 @@ public class EmAbilityBehavior : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+		if(RandomMatchmaker.instance && RandomMatchmaker.instance.singlePlayer) {
+			enabled = false;
+			return;
+		}
         if (isEnabled){
             if (Input.GetKeyDown(KeyCode.Q) && isEnabled){
                 usingAbility = !usingAbility;

@@ -14,7 +14,7 @@ public class RawlAbilityBehavior : MonoBehaviour {
 		highlightMat = Resources.Load ("HighlightMat") as Material;
 	}
 
-	bool isLocalPlayerRawl (){
+	public static bool isLocalPlayerRawl (){
 		GameObject Rawl = (GameObject) GameObject.Find ("Rawl(Clone)");
 		if (Rawl == null) {
 			return false;
