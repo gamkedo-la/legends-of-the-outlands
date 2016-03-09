@@ -4,7 +4,7 @@ using System.Collections;
 public class TwineSpring : Photon.MonoBehaviour {
 
 	public string removeThisNameOnEntry;
-	public Animation[] animOnEntry;
+	public Animator[] animOnEntry;
 	bool bandAttachedYet = false;
 
 	void Start () {
